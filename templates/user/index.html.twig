@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container my-2 bg-white rounded p-3 border">
+        <div class="row">
+            <div class="col-md-3">
+                <img src="../img/diego.jpg" width="100%">
+                <input type="file" class="form-control">
+            </div>
+            <div class="col-md-8">
+                <textarea class="form-control" rows="10" placeholder="You can insert HTML and CSS here "></textarea>
+                <input type="submit" class="btn btn-success btn-block my-2">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                   aria-selected="true" style="color: #1b1e21 !important;">
+                    Mis Publicaciones
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                   aria-controls="profile"
+                   aria-selected="false" style="color: #1b1e21 !important;">Favoritos</a>
+            </li>
+        </ul>
+        <div class="tab-content my-4" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                {% for post in user_posts %}
+                    {% if post.file == null %}
+                        {% set  first_row = 'col-md-12' %}
+                        {% set second_row = 'd-none' %}
+                    {% else %}
+                        {% set  first_row = 'col-md-9' %}
+                        {% set  second_row = 'col-md-3' %}
+                    {% endif %}
+                    <div class="container my-4 bg-white">
+                        <div class="row border custom-shadow">
+                            <div class="{{ first_row }} ">
+                                <div class=" my-2 px-1 py-2">
+                                    <h4>
+                                        <a href="{{ path('postDetails', {id:post.id, url:post.url}) }}">{{ post.title }}</a>
+                                    </h4>
+                                    <p>Por {{ post.user.username }} el {{ post.creationdate | date }}</p>
+                                    <div class="my-2">
+                                        <span class="alert-success py-1 px-5">{{ post.type }}</span>
+                                    </div>
+                                    <div>
+                                        {{ post.description  | u.truncate(500, '...') | raw }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="{{ second_row }} my-auto">
+                                {% if post.file != null %}
+                                    <img src="{{ asset('uploads/files/' ~ post.file) }}" alt="Not found"
+                                         width="100%">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                {% for interaction in saved_posts %}
+                    {% set post = interaction.post %}
+                    {% if post.file == null %}
+                        {% set  first_row = 'col-md-12' %}
+                        {% set second_row = 'd-none' %}
+                    {% else %}
+                        {% set  first_row = 'col-md-9' %}
+                        {% set  second_row = 'col-md-3' %}
+                    {% endif %}
+                    <div class="container my-4 bg-white">
+                        <div class="row border custom-shadow">
+                            <div class="{{ first_row }} ">
+                                <div class=" my-2 px-1 py-2">
+                                    <h4>
+                                        <a href="{{ path('postDetails', {id:post.id, url:post.url}) }}">{{ post.title }}</a>
+                                    </h4>
+                                    <p>Por {{ post.user.username }} el {{ post.creationdate | date }}</p>
+                                    <div class="my-2">
+                                        <span class="alert-success py-1 px-5">{{ post.type }}</span>
+                                    </div>
+                                    <div>
+                                        {{ post.description | u.truncate(500, '...') | raw}}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="{{ second_row }} my-auto">
+                                {% if post.file != null %}
+                                    <img src="{{ asset('uploads/files/' ~ post.file) }}" alt="Not found"
+                                         width="100%">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

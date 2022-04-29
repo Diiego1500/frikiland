@@ -21,7 +21,8 @@
                             <!--                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="background-color: #EFFFFD">-->
 
                             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                     data-parent="#accordion"
                                      style="background-color: #DAF1F9">
                                     {{ form_start(form) }}
                                     <div class="row p-2">
@@ -44,9 +45,13 @@
 
                                 </div>
                             {% else %}
-                                <div id="collapseOne" class="collapse alert alert-dark my-4 border" aria-labelledby="headingOne" data-parent="#accordion">
-                                Si deseas comentar, por favor <a href="{{ path('app_register')}}">Registrate</a> o
-                                    <a href="{{path('app_login')}}">inicia sesión</a>
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                     data-parent="#accordion">
+                                    <div class="alert alert-dark my-4 border m-3">
+                                        Si deseas publicar, por favor <a
+                                                href="{{ path('app_register') }}">Registrate</a> o
+                                        <a href="{{ path('app_login') }}">inicia sesión</a>
+                                    </div>
                                 </div>
                             {% endif %}
 
@@ -101,17 +106,18 @@
             </div>
             <div class="col-md-4 my-2">
                 <div class="p-1 border bg-white">
-                    <div class="my-2 border px-1 py-2 alert alert-info" >
-                        <h5 class="my-3">Importante:</h5>
+                    <div class="my-2 border px-1 py-2 alert alert-info">
+                        <h5 class="my-3 text-center">⚠️ Importante:</h5>
                         <ul>
-                            <li>No hackees mi sitio porfi</li>
-                            <li>Sé respetuoso</li>
-                            <li>Aporta contenido Friki, nerd</li>
-                            <li>Puedes usar HTML en los comentarios y publicaciones (Somos frikis despues de todo)</li>
-                            <li>En ese sitio usamos Bootstrap 4 (Para que estilices esos POSTS) </li>
-                            <li>Tu contraseña está encriptada, (Ni yo puedo verla, por desgracia)</li>
-                            <li>El podcast, libro, tutoriales, se subirán poco a poco</li>
-                            <li>Necesito comer, hay anuncios.</li>
+                            <li>🙏 No hackees mi sitio porfi</li>
+                            <li>🤝 Sé respetuoso</li>
+                            <li>🤓 Aporta contenido Friki, nerd</li>
+                            <li>☝️ Sólo 1 comentario por POST</li>
+                            <li>🧑‍💻 Puedes usar HTML en los comentarios y publicaciones (Somos frikis despues de todo)</li>
+                            <li>👩‍💻 En ese sitio usamos Bootstrap 4 (Para que estilices esos POSTS)</li>
+                            <li>🕵️ Tu contraseña está encriptada, (Ni yo puedo verla, por desgracia)</li>
+                            <li>🎙 El podcast, libro, tutoriales, se subirán poco a poco</li>
+                            <li>💰 Necesito comer, hay anuncios.</li>
                         </ul>
 
                     </div>
