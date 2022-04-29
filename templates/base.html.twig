@@ -15,6 +15,7 @@
             <script src="{{asset('js/jquery.min.js')}}"></script>
             <script src="{{asset('js/bootstrap.min.js')}}"></script>
             <script src="https://kit.fontawesome.com/f6edb77282.js" crossorigin="anonymous"></script>
+
         {% endblock %}
     </head>
     <body>
@@ -40,18 +41,25 @@
                             </li>
                         </ul>
                         <ul class="navbar-nav my-lg-0">
+{#                        https://symfonycasts.com/screencast/symfony2-ep2/twig-security-is-authenticated#}
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa-solid fa-user"></i>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                                 </div>
                             </li>
+
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_login') }}"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+                            </li>
+                        {% endif %}
+
+
                         </ul>
                     </div>
                 </div>

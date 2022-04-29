@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
-    CONST CHOICES = ['Programación' => 'Programación', 'Humor' => 'Humor', 'Aporte' => 'Aporte', 'Opinión' => 'Opinión', 'Debate' => 'Debate'];
+    CONST CHOICES = ['👩‍💻 Programación' => '👩‍💻 Programación', '😂 Humor' => '😂 Humor', '🗣 Aporte' => '🗣 Aporte', '🤔 Opinión' => '🤔 Opinión', '🤓 Debate' => '🤓 Debate'];
     CONST PLACEHOLDER = 'Seleccione una opción';
     /**
      * @ORM\Id
@@ -32,7 +32,7 @@ class Post
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $description;
 

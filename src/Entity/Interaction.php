@@ -18,12 +18,7 @@ class Interaction
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $user_like;
-
-    /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true )
      */
     private $user_favorite;
 
@@ -47,18 +42,6 @@ class Interaction
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserLike(): ?bool
-    {
-        return $this->user_like;
-    }
-
-    public function setUserLike(bool $user_like): self
-    {
-        $this->user_like = $user_like;
-
-        return $this;
     }
 
     public function getUserFavorite(): ?bool

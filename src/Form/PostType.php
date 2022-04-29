@@ -24,9 +24,10 @@ class PostType extends AbstractType
             ])
             ->add('description', TextareaType::class)
             ->add('file', FileType::class, [
-                'required' => false
+                'required' => false,
+                'data_class' => null,
             ])
-            ->add('save', SubmitType::class)
+            ->add('Guardar', SubmitType::class)
         ;
     }
 
