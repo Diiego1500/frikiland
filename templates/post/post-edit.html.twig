@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
+{% block title %} {{parent()}} - Editar Post {% endblock %}
 
 {% block body %}
     {{ parent() }}
-    <div class="container">
+    <div class="container my-2 bg-white p-2">
+        <h5 class="py-3"><a href="{{path('postDetails', {id:post.id, url:post.url})}}"><i class="fa-solid fa-arrow-left-long"></i> Regresar</a></h5>
+        <h2 class="my-4">Editar Post </h2>
         {{form(form)}}
     </div>
 {% endblock %}

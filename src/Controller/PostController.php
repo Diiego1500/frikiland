@@ -7,9 +7,11 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Form\InteractionType;
 use App\Form\PostType;
+use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,6 +28,7 @@ class PostController extends AbstractController
         $this->em = $em;
     }
 
+
     /**
      * @Route("/", name="index")
      */
@@ -39,11 +42,11 @@ class PostController extends AbstractController
             $user = $this->getUser();
             $date = new \DateTime();
             $file = $form->get('file')->getData();
-            if($file) {
+            if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
                 // Move the file to the directory where brochures are stored
                 try {
@@ -72,7 +75,7 @@ class PostController extends AbstractController
      */
     public function postDetails(Post $post, Request $request) {
         $user = $this->getUser();
-        $interaction = $this->em->getRepository(Interaction::class)->findOneBy(['post' => $post, 'user'=>$user]);
+        $interaction = $this->em->getRepository(Interaction::class)->findOneBy(['post' => $post, 'user' => $user]);
         if ($interaction == null) {
             $interaction = new Interaction();
         }
@@ -84,7 +87,7 @@ class PostController extends AbstractController
             $post->addInteraction($interaction);
             $this->em->persist($interaction);
             $this->em->flush();
-            return  $this->redirectToRoute('postDetails', ['id' => $post->getId(), 'url' => $post->getUrl()]);
+            return $this->redirectToRoute('postDetails', ['id' => $post->getId(), 'url' => $post->getUrl()]);
         }
         return $this->render('post/post-details.html.twig', [
             'interaction_form' => $interaction_form->createView(),
@@ -106,21 +109,40 @@ class PostController extends AbstractController
                 $this->em->flush();
                 return $this->redirectToRoute('postDetails', ['id' => $post->getId(), 'url' => $post->getUrl()]);
             }
-            return $this->render('post/post-edit.html.twig', ['form' =>$form->createView()]);
+            return $this->render('post/post-edit.html.twig', ['form' => $form->createView(), 'post' => $post]);
         }
         throw new \Exception('You are not allowed to this action');
     }
 
     /**
-     * @Route ("/post/delete/{id}", name="postDelete")
+     * @Route ("/post/delete/{id}", options={"expose"=true}, name="postDelete")
      */
     public function postDelete(Post $post) {
         $user = $this->getUser();
-        if ($post->getUser() == $user){
-           $this->em->remove($post);
-           $this->em->flush();
-           return $this->redirectToRoute('index');
+        if ($post->getUser() == $user) {
+            $this->em->remove($post);
+            $this->em->flush();
+            return $this->redirectToRoute('index');
         }
         throw new \Exception('You are not allowed to this action');
+    }
+
+    /**
+     * @Route ("/post/save/{id}", options={"expose"=true}, name="postSave")
+     */
+    public function postSave(Post $post, Request $request) {
+        if ($request->isXmlHttpRequest()) {
+            $user = $this->getUser();
+            $interaction = $this->em->getRepository(Interaction::class)->findOneBy(['post' => $post, 'user' => $user]);
+            if ($interaction == null) {
+                $interaction = new Interaction();
+                $interaction->setUser($user)->setPost($post)->setUserFavorite(true)->setComment(null);
+                $this->em->persist($interaction);
+            }
+            $interaction->setUserFavorite(true);
+            $this->em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+        throw new Exception('this is not an ajax call');
     }
 }

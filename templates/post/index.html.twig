@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
+{% block title %}{{ parent() }} - Home{% endblock %}
 
 {% block body %}
     {{ parent() }}
@@ -19,28 +19,38 @@
                                 </h5>
                             </div>
                             <!--                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="background-color: #EFFFFD">-->
-                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"
-                                 style="background-color: #DAF1F9">
-                                {{ form_start(form) }}
-                                <div class="row p-2">
-                                    <div class="col-md-6 my-2">
-                                        {{ form_widget(form.title, {attr:{'placeholder':'Titulo', 'class':'form-control'}}) }}
+
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"
+                                     style="background-color: #DAF1F9">
+                                    {{ form_start(form) }}
+                                    <div class="row p-2">
+                                        <div class="col-md-6 my-2">
+                                            {{ form_widget(form.title, {attr:{'placeholder':'Titulo', 'class':'form-control'}}) }}
+                                        </div>
+                                        <div class="col-md-6 my-2">
+                                            {{ form_widget(form.type, {attr:{'class':'form-control'}}) }}
+                                        </div>
+                                        <div class="col-md-12 my-2">
+                                            {{ form_widget(form.description, {attr:{'class':'form-control', 'placeholder': '¿Qué quieres contar?'}}) }}
+                                        </div>
+                                        <div class="col-md-12 text-center">
+                                            {{ form_widget(form.file, {attr:{'class':'form-control my-2'}}) }}
+                                            {{ form_widget(form.Guardar, {attr:{'class':'my-2 btn btn-success', 'value':'Guardar'}}) }}
+                                        </div>
+
                                     </div>
-                                    <div class="col-md-6 my-2">
-                                        {{ form_widget(form.type, {attr:{'class':'form-control'}}) }}
-                                    </div>
-                                    <div class="col-md-12 my-2">
-                                        {{ form_widget(form.description, {attr:{'class':'form-control', 'placeholder': '¿Qué quieres contar?'}}) }}
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        {{ form_widget(form.file, {attr:{'class':'form-control my-2'}}) }}
-                                        {{ form_widget(form.Guardar, {attr:{'class':'my-2 btn btn-success', 'value':'Guardar'}}) }}
-                                    </div>
+                                    {{ form_end(form) }}
 
                                 </div>
-                                {{ form_end(form) }}
+                            {% else %}
+                                <div id="collapseOne" class="collapse alert alert-dark my-4 border" aria-labelledby="headingOne" data-parent="#accordion">
+                                Si deseas comentar, por favor <a href="{{ path('app_register')}}">Registrate</a> o
+                                    <a href="{{path('app_login')}}">inicia sesión</a>
+                                </div>
+                            {% endif %}
 
-                            </div>
+
                         </div>
                     </div>
 
@@ -61,7 +71,6 @@
                                             <a href="{{ path('postDetails', {id: post.id, url: post.url}) }}">
                                                 {{ post.title }}
                                             </a>
-                                            <span style="color: orange"><i class="fa-solid fa-star"></i></span>
                                         </h4>
 
                                         <p>Por {{ post.user.username }} el {{ post.creationdate | date }}</p>
@@ -92,8 +101,19 @@
             </div>
             <div class="col-md-4 my-2">
                 <div class="p-1 border bg-white">
-                    <div class="my-2 border px-1 py-2 alert alert-info" style="height: 150px">
-                        <h3>INFO HERE</h3>
+                    <div class="my-2 border px-1 py-2 alert alert-info" >
+                        <h5 class="my-3">Importante:</h5>
+                        <ul>
+                            <li>No hackees mi sitio porfi</li>
+                            <li>Sé respetuoso</li>
+                            <li>Aporta contenido Friki, nerd</li>
+                            <li>Puedes usar HTML en los comentarios y publicaciones (Somos frikis despues de todo)</li>
+                            <li>En ese sitio usamos Bootstrap 4 (Para que estilices esos POSTS) </li>
+                            <li>Tu contraseña está encriptada, (Ni yo puedo verla, por desgracia)</li>
+                            <li>El podcast, libro, tutoriales, se subirán poco a poco</li>
+                            <li>Necesito comer, hay anuncios.</li>
+                        </ul>
+
                     </div>
                     <div class="my-2 border px-1 py-2 alert alert-info" style="height: 150px">
                         <h3>INFO HERE</h3>
@@ -103,8 +123,14 @@
         </div>
     </div>
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/index.js') }}"></script>
     <script>
-        $('.custom-file-input').on('change', function(event) {
+        $('.custom-file-input').on('change', function (event) {
             var inputFile = event.currentTarget;
             $(inputFile).parent()
                 .find('.custom-file-label')
