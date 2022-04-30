@@ -30,7 +30,7 @@
                         </button>
                     {% endif %}
                 </h1>
-                <p> Por {{ post.user.username }} el {{ post.creationdate | date }}</p>
+                <p> Por <a href="{{path('app_user', {id:post.user.id})}}">{{ post.user.username }}</a> el {{ post.creationdate | date }}</p>
                 <div class="my-2">
                     <span class="alert-success py-1 px-5"> {{ post.type }}</span>
                 </div>
@@ -70,7 +70,7 @@
                                     </button>
                                 {% endif %}
                             </h1>
-                            <p>Por {{ post.user.username }} el {{ post.creationdate | date }}</p>
+                            <p>Por <a href="{{path('app_user', {id:post.user.id})}}">{{ post.user.username }}</a> el {{ post.creationdate | date }}</p>
                             <div class="mb-4">
                                 <span class="alert-success py-1 px-5"> {{ post.type }}</span>
                             </div>

@@ -78,7 +78,7 @@
                                             </a>
                                         </h4>
 
-                                        <p>Por {{ post.user.username }} el {{ post.creationdate | date }}</p>
+                                        <p>Por <a href="{{path('app_user', {id:post.user.id})}}">{{ post.user.username }}</a> el {{ post.creationdate | date }}</p>
                                         <div class="my-2">
                                             <span class="alert-success py-1 px-5">{{ post.type }}</span>
                                         </div>
@@ -117,13 +117,13 @@
                             <li>👩‍💻 En ese sitio usamos Bootstrap 4 (Para que estilices esos POSTS)</li>
                             <li>🕵️ Tu contraseña está encriptada, (Ni yo puedo verla, por desgracia)</li>
                             <li>🎙 El podcast, libro, tutoriales, se subirán poco a poco</li>
-                            <li>💰 Necesito comer, hay anuncios.</li>
+                            <li>💰 Necesito comer, hay (o habrá) anuncios.</li>
                         </ul>
 
                     </div>
-                    <div class="my-2 border px-1 py-2 alert alert-info" style="height: 150px">
-                        <h3>INFO HERE</h3>
-                    </div>
+{#                    <div class="my-2 border px-1 py-2 alert alert-info" style="height: 150px">#}
+{#                        <h3>INFO HERE</h3>#}
+{#                    </div>#}
                 </div>
             </div>
         </div>

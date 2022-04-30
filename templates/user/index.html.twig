@@ -1,18 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}{{ parent() }} - {{user.username}}{% endblock %}
 
 {% block body %}
     {{ parent() }}
     <div class="container my-2 bg-white rounded p-3 border">
         <div class="row">
             <div class="col-md-3">
-                <img src="../img/diego.jpg" width="100%">
-                <input type="file" class="form-control">
+                {% if user.photo != null %}
+                    <img src="{{ asset('uploads/photos/'~ user.photo) }}" width="100%">
+                {% else %}
+                    <img src="{{ asset('img/6392506.png') }}" alt="frikiland">
+                {% endif %}
+                {% if app.user == user %}
+                    {{ form(form_photo) }}
+                {% endif %}
             </div>
             <div class="col-md-8">
-                <textarea class="form-control" rows="10" placeholder="You can insert HTML and CSS here "></textarea>
-                <input type="submit" class="btn btn-success btn-block my-2">
+                {% if user.description != null %}
+                    <div id="description">{{ user.description|raw }}</div>
+                    {% if app.user == user %}
+                        <button class="btn btn-info" id="changeDescription">Cambiar Descripción</button>
+                    {% endif %}
+                    {% set style = 'display:none' %}
+                {% else %}
+                    {% set style = 'display:block' %}
+                {% endif %}
+                {% if app.user == user %}
+                    {{ form_start(form_description, {attr:{style, id:'form_description'}}) }}
+                    {{ form_end(form_description) }}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -67,6 +84,12 @@
                             </div>
                         </div>
                     </div>
+                {% else %}
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="alert alert-warning border">No tienes ninguna publicación, <a
+                                    href="{{ path('index') }}">Crea la primera</a> Y procura que sea muuuy friki.
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -91,7 +114,7 @@
                                         <span class="alert-success py-1 px-5">{{ post.type }}</span>
                                     </div>
                                     <div>
-                                        {{ post.description | u.truncate(500, '...') | raw}}
+                                        {{ post.description | u.truncate(500, '...') | raw }}
                                     </div>
 
                                 </div>
@@ -104,10 +127,29 @@
                             </div>
                         </div>
                     </div>
+                {% else %}
+                    <div class="alert alert-warning border">Aún no guardas nada en favoritos!, puedes hacerlo seleccionando la estrella de los posts. Quedarán aquí guardadas :)</div>
                 {% endfor %}
 
             </div>
 
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.custom-file-input').on('change', function (event) {
+            var inputFile = event.currentTarget;
+            $(inputFile).parent()
+                .find('.custom-file-label')
+                .html(inputFile.files[0].name);
+        });
+
+        $('#changeDescription').click(function () {
+            $('#form_description').css('display', 'block');
+            $('#description').css('display', 'none');
+            $('#changeDescription').css('display', 'none');
+        })
+    </script>
 {% endblock %}
