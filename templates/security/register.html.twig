@@ -3,7 +3,32 @@
 {% block body %}
     <div class="container bg-white p-3 my-5">
         <h2 class="my-3">Registrate, nerd!</h2>
-        {{form (form)}}
+        {{form_start (form)}}
+        <div class="row">
+            <div class="col-md-12 my-2">
+                {{form_label(form.email, 'Email*')}}
+                {{form_widget(form.email, {attr:{'placeholder':'friky@example.com'}})}}
+            </div>
+            <div class="col-md-12 my-2">
+                {{form_label(form.password, 'Password*')}}
+                {{form_widget(form.password, {attr:{'placeholder':'Ingresa aquí tu contraseña'}})}}
+            </div>
+            <div class="col-md-12 my-2">
+                {{form_label(form.password, 'photo*')}}
+                {{form_widget(form.photo)}}
+            </div>
+
+            <div class="col-md-12 my-2">
+                {{form_label(form.description, 'Descripción*')}}
+                {{form_widget(form.description, {attr:{'placeholder':'Cuentanos sobre ti'}})}}
+            </div>
+            <div class="col-md-12 my-2">
+                {{form_widget(form.registrar, {attr:{'class':'btn btn-success btn-block'}})}}
+            </div>
+
+        </div>
+        {{form_end (form)}}
+        <a href="{{path('app_login')}}" class="btn btn-info btn-block">Login</a>
     </div>
 {% endblock %}
 {% block javascripts %}

@@ -80,7 +80,8 @@ class SecurityController extends AbstractController
             $user->setPassword($hashed_pass)->setRoles(['ROLE_USER']);
             $this->em->persist($user);
             $this->em->flush();
-            return $this->redirectToRoute('app_register');
+            $this->addFlash('success', 'Que la fuerza te acompañe, te has registrado con exito, ahora, inicia sesión.');
+            return $this->redirectToRoute('app_login');
         }
         return $this->render('security/register.html.twig', ['form' => $form->createView()]);
     }
