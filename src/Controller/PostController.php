@@ -9,11 +9,14 @@ use App\Form\InteractionType;
 use App\Form\PostType;
 use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -32,9 +35,16 @@ class PostController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(Request $request, SluggerInterface $slugger): Response {
+    public function index(Request $request, SluggerInterface $slugger, PaginatorInterface $paginator): Response {
         $post = new Post();
-        $posts = $this->em->getRepository(Post::class)->findAll();
+        $query = $this->em->getRepository(Post::class)->findAllPost();
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
+
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,29 +76,39 @@ class PostController extends AbstractController
         }
         return $this->render('post/index.html.twig', [
             'form' => $form->createView(),
-            'posts' => $posts
+            'posts' => $pagination
         ]);
     }
 
     /**
      * @Route ("/post/details/{id}/{url}", name="postDetails")
      */
-    public function postDetails(Post $post, Request $request) {
+    public function postDetails(Post $post, Request $request, MailerInterface $mailer) {
         $user = $this->getUser();
         $interaction = $this->em->getRepository(Interaction::class)->findOneBy(['post' => $post, 'user' => $user]);
+
         if ($interaction == null) {
             $interaction = new Interaction();
         }
         $interactions = $this->em->getRepository(Interaction::class)->findBy(['post' => $post->getId()]);
         $interaction_form = $this->createForm(InteractionType::class, $interaction);
         $interaction_form->handleRequest($request);
+
         if ($interaction_form->isSubmitted() && $interaction_form->isValid()) {
             $interaction->setUser($user);
             $post->addInteraction($interaction);
             $this->em->persist($interaction);
+            $email = (new Email())
+                ->from('notificaciones@frikyland.com')
+                ->to($post->getUser()->getEmail())
+                ->subject('este es un correo de prueba')
+                ->text('do not answer to this email.')
+                ->html("<p> <strong>Alguien ha comentado tu publicación en Frikyland! Entra a nuestro sitio web y echale un vistaso a tus publicaciones :D</strong></p>");
+            $mailer->send($email);
             $this->em->flush();
             return $this->redirectToRoute('postDetails', ['id' => $post->getId(), 'url' => $post->getUrl()]);
         }
+
         return $this->render('post/post-details.html.twig', [
             'interaction_form' => $interaction_form->createView(),
             'post' => $post,

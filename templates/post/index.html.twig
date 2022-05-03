@@ -81,7 +81,7 @@
                                             </a>
                                         </h4>
 
-                                        <p>Por <a href="{{path('app_user', {id:post.user.id})}}">{{ post.user.username }}</a> el {{ post.creationdate | date }}</p>
+                                        <p>Por <a href="{{path('app_user', {id:post.user_id})}}">{{ post.user_username }}</a> el {{ post.creationdate | date }}</p>
                                         <div class="my-2">
                                             <span class="alert-success py-1 px-5">{{ post.type }}</span>
                                         </div>
@@ -105,6 +105,11 @@
                     {% else %}
                         <div class="alert alert-warning"><Strong>NO hay ningún post, sé el primero!</Strong></div>
                     {% endfor %}
+
+                    <div class="navigation">
+                        {{ knp_pagination_render(posts, 'custom/custom_pagination.html.twig') }}
+{#                        {{ knp_pagination_render(posts) }}#}
+                    </div>
                 </div>
             </div>
             <div class="col-md-4 my-2">
