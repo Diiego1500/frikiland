@@ -101,9 +101,9 @@ class PostController extends AbstractController
             $email = (new Email())
                 ->from('notificaciones@frikyland.com')
                 ->to($post->getUser()->getEmail())
-                ->subject('este es un correo de prueba')
+                ->subject('Han comentado tu Post en Frikyland!')
                 ->text('do not answer to this email.')
-                ->html("<p> <strong>Alguien ha comentado tu publicación en Frikyland! Entra a nuestro sitio web y echale un vistaso a tus publicaciones :D</strong></p>");
+                ->html("<p> <strong>Alguien ha comentado tu publicación en <a href='https://frikyland.com/'>Frikyland!</a> Entra a nuestro  <a href='https://frikyland.com/'>sitio web</a> y echale un vistaso a tus publicaciones :D</strong></p>");
             $mailer->send($email);
             $this->em->flush();
             return $this->redirectToRoute('postDetails', ['id' => $post->getId(), 'url' => $post->getUrl()]);
