@@ -6,6 +6,7 @@
 parameters:
     files_directory: '%kernel.project_dir%/public/uploads/files'
     photos_directory: '%kernel.project_dir%/public/uploads/photos'
+    podcast_directory: '%kernel.project_dir%/public/uploads/podcast'
 services:
     # default configuration for services in *this* file
     _defaults:

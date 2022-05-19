@@ -9,7 +9,8 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1344652070596566"></script>
+        <script async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1344652070596566"></script>
     {% endblock %}
 </head>
 <body>
@@ -25,18 +26,19 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    {#                    <li class="nav-item"> #}
-                    {#                        <a class="nav-link" href="#"> #}
-                    {#                            <i class="fa-solid fa-microphone"></i> #}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_podcast') }}">
+                            <i class="fa-solid fa-microphone"></i>
 
-                    {#                            Podcast </a> #}
-                    {#                    </li> #}
+                            Podcast </a>
+                    </li>
                     {#                    <li class="nav-item"> #}
                     {#                        <a class="nav-link" href="#"><i class="fa-solid fa-book"></i> libro</a> #}
                     {#                    </li> #}
                 </ul>
                 <ul class="navbar-nav my-lg-0">
                     {#                        https://symfonycasts.com/screencast/symfony2-ep2/twig-security-is-authenticated #}
+
                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -44,9 +46,15 @@
                                 <i class="fa-solid fa-user"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('AdminPodcast') }}" class="dropdown-item">Admin Podcast</a>
+                                {% endif %}
+
                                 <a href="{{ path('app_user', {id: app.user.id}) }}" class="dropdown-item">
                                     Perfil
                                 </a>
+
                                 <a class="dropdown-item" href="{{ path('app_logout') }}">
                                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                                 </a>

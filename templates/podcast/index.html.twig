@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Podcast{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="container">
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            {% set opacity = 1 %}
+            {% set disable = true %}
+        {% else %}
+            {% set opacity = 0.5 %}
+            {% set disable = false %}
+            <div class="alert alert-secondary my-4">
+                <h4>
+                    <i class="fa-solid fa-triangle-exclamation"></i> -
+                    Si deseas escuchar el Podcast, por favor <a
+                    href="{{ path('app_register') }}" style="opacity: 1 !important; ">Registrate</a> o
+                    <a href="{{ path('app_login') }}">inicia sesión</a>
+                </h4>
+            </div>
+        {% endif %}
+        <div class="alert alert-warning border my-3">
+            <div class="row">
+                <div class="col-md-2 my-auto">
+                    <img src="{{ asset('img/podcast-01.png') }}" alt="podcast" class="w-100">
+                </div>
+                <div class="col-md-8">
+                    <h2>El podcast de los nerds</h2>
+                    <p>Hola y bienvenido al Podcast de <strong>Frikyland</strong> De nerds, para nerds, en donde no solo
+                        tocaremos temas frikis, sino también, de desarrollo personal y experiencias de vida de todo
+                        tipo.</p>
+                    <p>Ten en cuenta que buscamos darte el mayor valor posible, en el menor tiempo posible. Es por esta
+                        razón que encontrarás podcast muy cortos (En comparación al de otras plataformas)</p>
+                    <p>Esperamos que te diviertas y disfrutes de el contenido.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion my-4" id="accordionExample">
+            {% for podcast in podcasts %}
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                                    data-target="#collapse{{ podcast.id }}" aria-expanded="true"
+                                    aria-controls="collapse{{ podcast.id }}">
+                                <i class="fa-solid fa-microphone"></i> - {{ podcast.title | upper }}
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapse{{ podcast.id }}" class="collapse" aria-labelledby="headingOne"
+                         data-parent="#accordionExample">
+                        <div class="card-body" style="opacity: {{ opacity }}">
+                            {{ podcast.description }}
+                            <hr>
+                            <div class="text-center">
+                                {% if disable == true %}
+                                    {% set path = 'uploads/podcast/'~podcast.src %}
+                                {% else %}
+                                    {% set path = '#' %}
+                                {% endif %}
+                                <audio controls>
+                                    <source src="{{ asset(path) }}" type="audio/mp3">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">No se ha subido Podcast Aún</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

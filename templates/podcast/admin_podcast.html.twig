@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Add Podcast{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="my-4">
+            {{ form(form) }}
+        </div>
+        <hr>
+        <table class="table bg-white table-striped">
+            <thead>
+            <th>Titulo</th>
+            <th>Descripción</th>
+            <th>Podcast</th>
+            <th>Actions</th>
+            </thead>
+            <tbody>
+            {% for podcast in podcasts %}
+                <tr>
+                    <td>{{ podcast.title }}</td>
+                    <td>{{ podcast.description }}</td>
+                    <td>
+                        <audio controls>
+                            <source src="{{ asset('uploads/podcast/'~podcast.src) }}" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td><a href="{{ path('DeletePodcast', {id: podcast.id}) }}" class="btn btn-danger">Eliminar</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script>
+        $('.custom-file-input').on('change', function (event) {
+            var inputFile = event.currentTarget;
+            $(inputFile).parent()
+                .find('.custom-file-label')
+                .html(inputFile.files[0].name);
+        });
+    </script>
+{% endblock %}
