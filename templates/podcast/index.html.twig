@@ -15,12 +15,19 @@
             <div class="alert alert-secondary my-4">
                 <h4>
                     <i class="fa-solid fa-triangle-exclamation"></i> -
-                    Si deseas escuchar el Podcast, por favor <a
-                    href="{{ path('app_register') }}" style="opacity: 1 !important; ">Registrate</a> o
+                    Si deseas escuchar/comentar el Podcast, por favor <a
+                            href="{{ path('app_register') }}" style="opacity: 1 !important; ">Registrate</a> o
                     <a href="{{ path('app_login') }}">inicia sesión</a>
                 </h4>
             </div>
         {% endif %}
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success my-3">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <div class="alert alert-warning border my-3">
             <div class="row">
                 <div class="col-md-2 my-auto">
@@ -69,9 +76,27 @@
                         </div>
                     </div>
                 </div>
-                {% else %}
+            {% else %}
                 <div class="alert alert-info">No se ha subido Podcast Aún</div>
             {% endfor %}
         </div>
+
+        <hr>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            {{ form(form) }}
+        {% endif %}
+
+        {% for comment in podcast_comments %}
+            <div class="bg-white p-3 my-3 border">
+                {% set user = comment.user.username |split('@') %}
+                <div>Comentado por: {{ user[0]}} el {{ comment.creationdate | date }}</div>
+                <div>
+                    {{ comment.description | raw }}
+
+                </div>
+            </div>
+            {% else %}
+            <div class="alert alert-warning">Aún no hay comentarios :( Conviertete en el primero.</div>
+        {% endfor %}
     </div>
 {% endblock %}

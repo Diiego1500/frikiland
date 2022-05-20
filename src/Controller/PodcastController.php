@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Podcast;
+use App\Entity\PodcastComment;
+use App\Form\PodcastCommentType;
 use App\Form\PodcastType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,11 +72,24 @@ class PodcastController extends AbstractController
     /**
      * @Route("/podcast", name="app_podcast")
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $comment = new PodcastComment();
         $podcasts = $this->em->getRepository(Podcast::class)->findAll();
+        $podcast_comments = $this->em->getRepository(PodcastComment::class)->findAll();
+        $form = $this->createForm(PodcastCommentType::class, $comment);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser())->setCreationDate(new \DateTime());
+            $this->em->persist($comment);
+            $this->em->flush();
+            $this->addFlash('success', '¡Comentario Creado! ¡El conocimiento es poder!');
+            return  $this->redirectToRoute('app_podcast');
+        }
         return $this->render('podcast/index.html.twig', [
-            'podcasts' => $podcasts
+            'podcasts' => $podcasts,
+            'podcast_comments'=> $podcast_comments,
+            'form' => $form->createView()
         ]);
     }
 }

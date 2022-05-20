@@ -57,10 +57,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PodcastComment::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $podcastComments;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->interactions = new ArrayCollection();
+        $this->podcastComments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,6 +238,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PodcastComment>
+     */
+    public function getPodcastComments(): Collection
+    {
+        return $this->podcastComments;
+    }
+
+    public function addPodcastComment(PodcastComment $podcastComment): self
+    {
+        if (!$this->podcastComments->contains($podcastComment)) {
+            $this->podcastComments[] = $podcastComment;
+            $podcastComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePodcastComment(PodcastComment $podcastComment): self
+    {
+        if ($this->podcastComments->removeElement($podcastComment)) {
+            // set the owning side to null (unless already changed)
+            if ($podcastComment->getUser() === $this) {
+                $podcastComment->setUser(null);
+            }
+        }
 
         return $this;
     }
