@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarios Registrados{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container my-4">
+        <h3 class="my-3">Usuarios Registrados</h3>
+        <table class="table bg-white">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><a href="{{ path('app_user', {id:user.id}) }}">{{ user.id }}</a></td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <a href="{{ path('delete_user', {id: user.id}) }}" class="btn btn-danger btn-block">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
