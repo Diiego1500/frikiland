@@ -23,7 +23,13 @@ RUN apt install -y libapache2-mod-php8.1 \
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
+# NPM
+
+RUN apt install -y nodejs npm
+
 COPY 000-default.conf /etc/apache2/sites-available
 WORKDIR /var/www/html/frikyland
 
+#DEPENDENCIES
+# RUN composer install && npm install && npm run build
 CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
