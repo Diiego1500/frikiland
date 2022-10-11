@@ -62,6 +62,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $podcastComments;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_trusted=false;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -268,6 +273,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $podcastComment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsTrusted(): ?bool
+    {
+        return $this->is_trusted;
+    }
+
+    public function setIsTrusted(bool $is_trusted): self
+    {
+        $this->is_trusted = $is_trusted;
 
         return $this;
     }

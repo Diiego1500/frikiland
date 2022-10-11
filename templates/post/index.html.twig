@@ -77,7 +77,19 @@
 
                                         <h4>
                                             <a href="{{ path('postDetails', {id: post.id, url: post.url}) }}">
+                                                <div class="d-none d-sm-block ">
+                                                    {{ post.title }}
+                                                    {% if post.user_trusted %}
+                                                        <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="5%">
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="d-block d-sm-block d-md-none">
                                                 {{ post.title }}
+                                                {% if post.user_trusted %}
+                                                        <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
+                                                {% endif %}
+                                                </div>
                                             </a>
                                         </h4>
 
@@ -87,7 +99,11 @@
                                             <span class="alert-success py-1 px-5">{{ post.type }}</span>
                                         </div>
                                         <div>
-                                            {{ post.description | u.truncate(500, '...') | raw }}
+                                                {% if post.user_trusted %}
+                                                    {{ post.description | u.truncate(500, '...') | raw }}
+                                                {% else %}
+                                                    {{ post.description }}
+                                                {% endif %}
                                         </div>
 
                                     </div>
@@ -119,6 +135,16 @@
                         <h5 class="my-3 text-center">⚠️ Importante:</h5>
                         <ul>
                             <li>🙏 No hackees mi sitio porfi</li>
+                            <li>
+                                <div class="d-none d-sm-block ">
+                                    <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
+                                    Usuarios de confianza (Pueden ejecutar HTML)
+                                </div>
+                                <div class="d-block d-sm-block d-md-none">
+                                    <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
+                                    Usuarios de confianza (Pueden ejecutar HTML)
+                                </div>
+                            </li>
                             <li>🤝 Sé respetuoso</li>
                             <li>🤓 Aporta contenido Friki, nerd</li>
                             <li>☝️ Sólo 1 comentario por POST</li>

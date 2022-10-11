@@ -40,5 +40,13 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_users');
     }
 
+    /**
+     * @Route("/admin/trusted/user/{id}", name="trusted_user")
+     */
+    public function is_trusted_user(User $user){
+        $user->setIsTrusted(!$user->getIsTrusted());
+        $this->em->flush();
+        return $this->redirectToRoute('admin_users');
+    }
 
 }
