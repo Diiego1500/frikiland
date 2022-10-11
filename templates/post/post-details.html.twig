@@ -42,7 +42,11 @@
                 {% endif %}
             </div>
             <div class="text-justify">
-                {{ post.description | raw }}
+                {% if post.user.istrusted %}
+                    {{ post.description | raw }}
+                {% else %}
+                    {{ post.description }}
+                {% endif %}
             </div>
         </div>
         <!--    ocultar en MD-->
@@ -82,7 +86,11 @@
                         {% endif %}
 
                         <div class="w-100 text-justify">
-                            {{ post.description | raw }}
+                            {% if post.user.istrusted %}
+                                {{ post.description | raw }}
+                            {% else %}
+                                {{ post.description }}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -103,9 +111,27 @@
                     {% if interaction.comment != null %}
                         <div class="col-md-12 my-2 alert alert-info text-justify">
                             {% set user = interaction.user.username |split('@') %}
-                            <div class="my-3"><strong>{{ user[0] }} Comentó:</strong></div>
+
+                            <div class="d-none d-sm-block ">
+                                <div class="my-3"><strong>{{ user[0] }} {% if interaction.user.istrusted %}
+                                    <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="3%">
+                                        {% endif %} Comentó:</strong></div>
+                            </div>
+
+                            <div class="d-block d-sm-block d-md-none">
+                                <div class="my-3"><strong>{{ user[0] }} {% if interaction.user.istrusted %}
+                                    <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
+                                        {% endif %} Comentó:</strong></div>
+                            </div>
+
+
                             <div>
-                                {{ interaction.comment | raw }}
+                                {% if interaction.user.istrusted %}
+                                    {{ interaction.comment | raw }}
+                                {% else %}
+                                    {{ interaction.comment }}
+                                {% endif %}
+
                             </div>
                         </div>
                     {% endif %}
