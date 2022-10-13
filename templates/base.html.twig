@@ -32,9 +32,9 @@
 
                             Podcast </a>
                     </li>
-                    {#                    <li class="nav-item"> #}
-                    {#                        <a class="nav-link" href="#"><i class="fa-solid fa-book"></i> libro</a> #}
-                    {#                    </li> #}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('book_index') }}"><i class="fa-solid fa-book"></i> libro</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav my-lg-0">
                     {#                        https://symfonycasts.com/screencast/symfony2-ep2/twig-security-is-authenticated #}
@@ -50,6 +50,7 @@
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a href="{{ path('AdminPodcast') }}" class="dropdown-item">Admin Podcast</a>
                                     <a href="{{ path('admin_users') }}" class="dropdown-item">Admin Users</a>
+                                    <a href="{{ path('admin_books') }}" class="dropdown-item">Admin Books</a>
                                 {% endif %}
 
                                 <a href="{{ path('app_user', {id: app.user.id}) }}" class="dropdown-item">

@@ -2,11 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
+use App\Entity\BookEntry;
 use App\Entity\User;
+use App\Form\BookEntryType;
+use App\Form\BookType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AdminController extends AbstractController
 {
@@ -47,6 +54,68 @@ class AdminController extends AbstractController
         $user->setIsTrusted(!$user->getIsTrusted());
         $this->em->flush();
         return $this->redirectToRoute('admin_users');
+    }
+
+    /**
+     * @Route("/admin/books", name="admin_books")
+     */
+    public function admin_books(Request $request, SluggerInterface $slugger){
+        $book = new Book();
+        $book_entry = new BookEntry();
+        $created_books = $this->em->getRepository(Book::class)->findAll();
+        $created_books_entries = $this->em->getRepository(BookEntry::class)->findAll();
+        $form_books = $this->createForm(BookType::class, $book);
+        $form_entry = $this->createForm(BookEntryType::class, $book_entry);
+        $form_books->handleRequest($request);
+        $form_entry->handleRequest($request);
+        if ($form_books->isSubmitted() && $form_books->isValid()) {
+            $this->em->persist($book);
+            $front_page = $form_books->get('front_page')->getData();
+            if ($front_page) {
+                $originalFilename = pathinfo($front_page->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$front_page->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $front_page->move(
+                        $this->getParameter('books_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    throw new \Exception('There is an error.');
+                }
+                $book->setFrontPage($newFilename);
+                $this->em->flush();
+            }
+            $this->em->flush();
+            $this->addFlash('success', 'Libro Creado');
+            return  $this->redirectToRoute('admin_books');
+        }
+        if ($form_entry->isSubmitted() && $form_entry->isValid()) {
+            $this->em->persist($book_entry);
+
+            $this->addFlash('success', 'Entrada Creada');
+            $this->em->flush();
+            return $this->redirectToRoute('admin_books');
+
+        }
+        return $this->render('admin/books.html.twig', [
+            'form_books' => $form_books->createView(),
+            'form_entry' => $form_entry->createView(),
+            'created_books' => $created_books,
+            'created_books_entries' => $created_books_entries
+        ]);
+    }
+
+    /**
+     * @Route("/admin/delete/entry/{id}", name="delete_books")
+     */
+    public function delete_books(BookEntry $bookEntry) {
+        $this->em->remove($bookEntry);
+        $this->em->flush();
+        return $this->redirectToRoute('admin_books');
     }
 
 }

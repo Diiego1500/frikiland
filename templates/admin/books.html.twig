@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarios Registrados{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success my-2">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-md-8">
+                <h3 class="my-3">Entradas</h3>
+                {{ form(form_entry) }}
+                <hr>
+                <table class="table table-responsive-sm table-striped w-100">
+                    <thead>
+                    <tr>
+                        <th>Nombre del libro</th>
+                        <th>Titulo de la entrada</th>
+                        <th>Fecha de publicación</th>
+                    </tr>
+                    </thead>
+                    {% for entry in  created_books_entries %}
+                        <tr>
+                            <td>
+                                {{ entry.book.name }}
+                            </td>
+                            <td>
+                                {{ entry.title }}
+                            </td>
+                            <td>
+                                {{ entry.publicationdate | date("m/d/Y") }}
+                            </td>
+                            <td>
+                                <a href="{{ path('delete_books', {id:entry.id}) }}" class="btn btn-danger btn-block">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h3 class="my-3">Libros</h3>
+                {{ form(form_books) }}
+                <hr>
+                <table>
+                    {% for book in created_books %}
+                        <tr>
+                            <td>
+                                <img src="{{ asset('uploads/books/'~book.frontpage) }}" alt="{{ book.name }}" width="50%">
+                            </td>
+                            <td>{{ book.name }}</td>
+                        </tr>
+                    {% else %}
+                        <div class="alert alert-warning">No has creado ningun libro aun.</div>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.custom-file-input').on('change', function (event) {
+            var inputFile = event.currentTarget;
+            $(inputFile).parent()
+                .find('.custom-file-label')
+                .html(inputFile.files[0].name);
+        });
+
+        $('#changeDescription').click(function () {
+            $('#form_description').css('display', 'block');
+            $('#description').css('display', 'none');
+            $('#changeDescription').css('display', 'none');
+        })
+    </script>
+{% endblock %}

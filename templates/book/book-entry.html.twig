@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="row my-2">
+            <div class="col-md-8 p-2 bg-white rounded p-2 my-2">
+                <h1>{{ entry.title }}</h1>
+                <p>Fecha de publicación: {{ entry.publicationdate | date("m/d/Y") }}</p>
+                <p>{{ entry.description | raw }}</p>
+            </div>
+            <div class="col-md-4">
+
+                    <div class="p-2 my-2">
+                        <div class="text-center alert alert-info">
+                            <img src="{{ asset('uploads/books/'~ entry.book.frontpage) }}" alt="{{ entry.book.name }}" width="40%">
+                            <h5 class="my-3">{{ entry.book.name }}</h5>
+                            <hr>
+                            <p>{{ entry.book.description }}</p>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

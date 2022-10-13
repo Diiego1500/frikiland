@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="row my-2">
+            <div class="col-md-8">
+                <h3>Entradas</h3>
+                <table class="table table-responsive-sm table-striped bg-white">
+
+                    {% for entry in entries %}
+                        <tr>
+                            <td><a href="{{ path('book_entry', {id:entry.id}) }}">{{ entry.book.name }} - {{ entry.title }}</a></td>
+                        </tr>
+                    {% else %}
+                        <div class="alert alert-warning">Aún no se regisstran entradas</div>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-md-4">
+                <div class="p-2 my-1">
+                    <div class="text-center alert alert-warning rounded border">
+                        <h5 class="my-1">Importante</h5>
+                        Esta sección será actualizada cada Domingo a las 8:00 PM Hora Colombiana
+                    </div>
+                </div>
+                {% for book in books %}
+                    <div class="p-2 my-2">
+                        <div class="text-center alert alert-info">
+                            <img src="{{ asset('uploads/books/'~book.frontpage) }}" alt="{{ book.name }}" width="40%">
+                            <h5 class="my-3">{{ book.name }}</h5>
+                            <hr>
+                            <p>{{ book.description }}</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-warning">No se ha publicado ningún libro por el momento.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
