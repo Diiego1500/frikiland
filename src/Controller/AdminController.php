@@ -42,6 +42,21 @@ class AdminController extends AbstractController
      * @Route("/admin/delete/user/{id}", name="delete_user")
      */
     public function delete_user(User $user) {
+        $user_posts = $user->getPosts();
+        $user_comments = $user->getInteractions();
+        $user_podcast_comment = $user->getPodcastComments();
+        foreach ($user_posts as $post) {
+            $this->em->remove($post);
+        }
+
+        foreach ($user_comments as $comment) {
+            $this->em->remove($comment);
+        }
+
+        foreach ($user_podcast_comment as $podcast_comment) {
+            $this->em->remove($podcast_comment);
+        }
+
         $this->em->remove($user);
         $this->em->flush();
         return $this->redirectToRoute('admin_users');
