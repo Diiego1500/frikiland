@@ -64,6 +64,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function findAllEmails() {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT user.email
+                FROM App:User user
+            ')->getSingleColumnResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

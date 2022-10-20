@@ -7,11 +7,15 @@ use App\Entity\BookEntry;
 use App\Entity\User;
 use App\Form\BookEntryType;
 use App\Form\BookType;
+use App\Form\NotificationType;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -36,6 +40,30 @@ class AdminController extends AbstractController
         return $this->render('admin/users.html.twig', [
             'users' => $users,
         ]);
+    }
+
+    /**
+     * @Route("/admin/news/notifications", name="news_notification")
+     */
+    public function news_notification(Request $request, MailerInterface $mailer): Response {
+        $form = $this->createForm(NotificationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $title = $form->get('title')->getData();
+            $body = $form->get('body')->getData();
+            $users_emails = $this->em->getRepository(User::class)->findAllEmails();
+            $email = (new Email())
+                ->from('notificaciones@frikyland.com')
+                ->to(...$users_emails)
+                ->subject($title)
+                ->text('do not answer to this email.')
+                ->html("<p> $body </p>");
+            $mailer->send($email);
+            $this->addFlash('success', 'Tienes super poderes! Has enviado un correo MASIVAMENTE');
+            return  $this->redirectToRoute('news_notification');
+        }
+        return $this->render('admin/news-notifications.html.twig', ['form' => $form->createView()]);
     }
 
     /**
