@@ -1,10 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BookController!{% endblock %}
+{% block title %}Libros{% endblock %}
 
 {% block body %}
     {{ parent() }}
     <div class="container">
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            {% set opacity = 1 %}
+            {% set disable = true %}
+        {% else %}
+            {% set opacity = 0.5 %}
+            {% set disable = false %}
+            <div class="alert alert-secondary my-4">
+                <h4>
+                    <i class="fa-solid fa-triangle-exclamation"></i> -
+                    Si deseas leer/comentar el libro, por favor <a
+                            href="{{ path('app_register') }}" style="opacity: 1 !important; ">Registrate</a> o
+                    <a href="{{ path('app_login') }}">inicia sesión</a>
+                </h4>
+            </div>
+        {% endif %}
+
         <div class="row my-2">
             <div class="col-md-8">
                 <h3>Entradas</h3>
@@ -12,10 +28,17 @@
 
                     {% for entry in entries %}
                         <tr>
-                            <td><a href="{{ path('book_entry', {id:entry.id}) }}">{{ entry.book.name }} - {{ entry.title }}</a></td>
+                            <td style="opacity: {{ opacity }}">
+                                {% if disable == true %}
+                                    {% set path_to_entry = path('book_entry', {id:entry.id}) %}
+                                {% else %}
+                                    {% set path_to_entry = '#' %}
+                                {% endif %}
+                                <a href="{{ path_to_entry }}">{{ entry.book.name }} - {{ entry.title }}</a>
+                            </td>
                         </tr>
                     {% else %}
-                        <div class="alert alert-warning">Aún no se regisstran entradas</div>
+                        <div class="alert alert-warning">Aún no se registran entradas</div>
                     {% endfor %}
                 </table>
             </div>
@@ -29,7 +52,7 @@
                 {% for book in books %}
                     <div class="p-2 my-2">
                         <div class="text-center alert alert-info">
-                            <img src="{{ asset('uploads/books/'~book.frontpage) }}" alt="{{ book.name }}" width="40%">
+                            <img src="{{ asset('uploads/books/'~book.frontpage) }}" alt="{{ book.name }}" width="100%">
                             <h5 class="my-3">{{ book.name }}</h5>
                             <hr>
                             <p>{{ book.description }}</p>

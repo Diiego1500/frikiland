@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BookController!{% endblock %}
+{% block title %}{{ entry.book.name }} - {{ entry.title }}{% endblock %}
 
 {% block body %}
     {{ parent() }}
     <div class="container">
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <div class="row my-2">
             <div class="col-md-8 p-2 bg-white rounded p-2 my-2">
                 <h1>{{ entry.title }}</h1>
@@ -15,7 +16,7 @@
 
                     <div class="p-2 my-2">
                         <div class="text-center alert alert-info">
-                            <img src="{{ asset('uploads/books/'~ entry.book.frontpage) }}" alt="{{ entry.book.name }}" width="40%">
+                            <img src="{{ asset('uploads/books/'~ entry.book.frontpage) }}" alt="{{ entry.book.name }}" width="100%">
                             <h5 class="my-3">{{ entry.book.name }}</h5>
                             <hr>
                             <p>{{ entry.book.description }}</p>
@@ -24,5 +25,15 @@
 
             </div>
         </div>
+        {% else %}
+            <div class="alert alert-secondary my-4">
+                <h4>
+                    <i class="fa-solid fa-triangle-exclamation"></i> -
+                    Si deseas leer/comentar el libro, por favor <a
+                            href="{{ path('app_register') }}" style="opacity: 1 !important; ">Registrate</a> o
+                    <a href="{{ path('app_login') }}">inicia sesión</a>
+                </h4>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

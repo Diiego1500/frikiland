@@ -77,17 +77,16 @@
 
                                         <h4>
                                             <a href="{{ path('postDetails', {id: post.id, url: post.url}) }}">
-                                                <div class="d-none d-sm-block ">
+                                                <div class="d-block d-sm-block d-md-none">
                                                     {{ post.title }}
                                                     {% if post.user_trusted %}
-                                                        <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="5%">
+                                                        <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
                                                     {% endif %}
                                                 </div>
-
-                                                <div class="d-block d-sm-block d-md-none">
+                                                <div class="d-none d-md-block">
                                                 {{ post.title }}
                                                 {% if post.user_trusted %}
-                                                        <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
+                                                        <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="5%">
                                                 {% endif %}
                                                 </div>
                                             </a>
@@ -136,11 +135,11 @@
                         <ul>
                             <li>🙏 No hackees mi sitio porfi</li>
                             <li>
-                                <div class="d-none d-sm-block ">
-                                    <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
+                                <div class="d-none d-md-block"> {# pantalla mediana #}
+                                    <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="10%">
                                     Usuarios de confianza (Pueden ejecutar HTML)
                                 </div>
-                                <div class="d-block d-sm-block d-md-none">
+                                <div class="d-block d-sm-block d-md-none"> {# pantalla pequeña #}
                                     <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
                                     Usuarios de confianza (Pueden ejecutar HTML)
                                 </div>
