@@ -58,7 +58,7 @@ class PostController extends AbstractController
             $request->query->getInt('page', 1),
             10
         );
-        $this->addFlash('success', "Ahora estás visualizando los posts de por el item seleccionado");
+        // $this->addFlash('success', "Ahora estás visualizando los posts de por el item seleccionado");
         return $this->shared_render($post, $request, $slugger, $pagination);
     }
 
