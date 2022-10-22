@@ -23,7 +23,7 @@
 
                     <td>
                         <a href="{{ path('trusted_user', {id: user.id}) }}" class="btn btn-warning btn-block">Confiabilidad</a>
-                        <a href="{{ path('delete_user', {id: user.id}) }}" class="btn btn-danger btn-block">Eliminar</a>
+                        <a href="{{ path('delete_user', {id: user.id}) }}" class="btn btn-danger btn-block" onclick="return confirm('¿Desea eliminar este usuario?');">Eliminar</a>
                     </td>
                 </tr>
             {% endfor %}

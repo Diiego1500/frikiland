@@ -7,10 +7,12 @@
     <div class="container">
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <div class="row my-2">
-            <div class="col-md-8 p-2 bg-white rounded p-2 my-2">
+            <div class="col-md-8">
+                <div class="p-2 bg-white rounded p-2 my-2">
                 <h1>{{ entry.title }}</h1>
                 <p>Fecha de publicación: {{ entry.publicationdate | date("m/d/Y") }}</p>
                 <p>{{ entry.description | raw }}</p>
+                </div>
             </div>
             <div class="col-md-4">
 

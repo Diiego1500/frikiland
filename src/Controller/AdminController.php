@@ -153,9 +153,24 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/delete/entry/{id}", name="delete_books")
+     * @Route("/admin/edit/entry/{id}", name="edit_entry")
      */
-    public function delete_books(BookEntry $bookEntry) {
+    public function edit_books(BookEntry $bookEntry, Request $request) {
+        $form = $this->createForm(BookEntryType::class, $bookEntry);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->flush();
+            $this->addFlash('success', 'Entrada Editada');
+            return $this->redirectToRoute('admin_books');
+        }
+
+        return $this->render('admin/edit-entry.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/admin/delete/entry/{id}", name="delete_entry")
+     */
+    public function delete_entry(BookEntry $bookEntry) {
         $this->em->remove($bookEntry);
         $this->em->flush();
         return $this->redirectToRoute('admin_books');

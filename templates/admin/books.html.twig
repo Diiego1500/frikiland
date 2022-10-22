@@ -37,7 +37,8 @@
                                 {{ entry.publicationdate | date("m/d/Y") }}
                             </td>
                             <td>
-                                <a href="{{ path('delete_books', {id:entry.id}) }}" class="btn btn-danger btn-block">Eliminar</a>
+                                <a href="{{ path('edit_entry', {id:entry.id}) }}" class="btn btn-warning btn-block">Editar</a>
+                                <a href="{{ path('delete_entry', {id:entry.id}) }}" class="btn btn-danger btn-block" onclick="return confirm('¿Desea eliminar este libro?');">Eliminar</a>
                             </td>
                         </tr>
                     {% endfor %}
