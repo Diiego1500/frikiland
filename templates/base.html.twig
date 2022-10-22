@@ -36,6 +36,18 @@
                         <a class="nav-link" href="{{ path('book_index') }}"><i class="fa-solid fa-book"></i> libro</a>
                     </li>
                 </ul>
+                <div class="form-inline my-2 my-lg-0" method="post">
+                    <select name="posts_types" class="form-control mx-1" id="selected_post_type">
+                        <option>¿Desea Bucar por Tipo?</option>
+                        <option value="none">Restablecer</option>
+                        <option value="Programación">Programacion</option>
+                        <option value="Humor">Humor</option>
+                        <option value="Aporte">Aporte</option>
+                        <option value="Opinión">Opinión</option>
+                        <option value="Debate">Debate</option>
+                    </select>
+                    <button id="filter_post_button" class="btn btn-success my-2 my-sm-0">Filtrar</button>
+                </div>
                 <ul class="navbar-nav my-lg-0">
                     {#                        https://symfonycasts.com/screencast/symfony2-ep2/twig-security-is-authenticated #}
 
@@ -92,6 +104,7 @@
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/filter.js') }}"></script>
     <script src="https://kit.fontawesome.com/f6edb77282.js" crossorigin="anonymous"></script>
 {% endblock %}
 </body>

@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/app/login", name="app_login")
      */
     public function index(AuthenticationUtils $authenticationUtils): Response {
 
@@ -43,14 +43,14 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="app_logout", methods={"GET"})
+     * @Route("/app/logout", name="app_logout", methods={"GET"})
      */
     public function logout(): void {
 
     }
 
     /**
-     * @Route("/register", name="app_register")
+     * @Route("/app/register", name="app_register")
      */
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger) {
         $user = new User();

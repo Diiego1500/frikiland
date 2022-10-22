@@ -8,6 +8,11 @@
         {% if app.user %}
             <h4 class="my-3 alert alert-warning border">🤓 Bienvenido a Frikyland, <i>{{app.user.username | capitalize}}</i> </h4>
         {%endif%}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
         <div class="row">
             <div class="col-md-8 my-2">
                 <div class="p-2 border bg-white">
@@ -61,7 +66,18 @@
 
                         </div>
                     </div>
+                                {{ form_start(filter_form) }}
 
+                    <div class="px-1 row my-2">
+                        <div class="col-8">
+                            {{ form_widget(filter_form.filter_type) }}
+                        </div>
+                        <div class="col-4">
+                            {{ form_widget(filter_form.Filtrar, {attr: {class: 'btn btn-success btn-block'}}) }}
+                        </div>
+                    </div>
+
+                    {{ form_end(filter_form) }}
                     {% for post in posts %}
                         {% if post.file == null %}
                             {% set  first_row = 'col-md-12' %}

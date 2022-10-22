@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Interaction;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Form\FilterType;
 use App\Form\InteractionType;
 use App\Form\PostType;
 use Doctrine\DBAL\Driver\PDO\Exception;
@@ -33,20 +34,39 @@ class PostController extends AbstractController
 
 
     /**
-     * @Route("/", name="index")
+     * @Route("/{filter}", name="index")
      */
-    public function index(Request $request, SluggerInterface $slugger, PaginatorInterface $paginator): Response {
+    public function index(Request $request, SluggerInterface $slugger, PaginatorInterface $paginator, $filter='none'): Response {
         $post = new Post();
         $query = $this->em->getRepository(Post::class)->findAllPost();
-
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
             10
         );
+        return $this->shared_render($post, $request, $slugger, $pagination);
+    }
 
+    /**
+     * @Route("/filter/{filter}", options={"expose"=true}, name="filter_posts")
+     */
+    public function filter_posts(Request $request, SluggerInterface $slugger, PaginatorInterface $paginator, $filter='none') {
+        $post = new Post();
+        $query = $this->em->getRepository(Post::class)->findPostByType($filter);
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
+        $this->addFlash('success', "Ahora estás visualizando los posts de por el item seleccionado");
+        return $this->shared_render($post, $request, $slugger, $pagination);
+    }
+
+    public function shared_render($post, $request, $slugger, $pagination){
+        $filter_form = $this->createForm(FilterType::class);
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
+        $filter_form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $url = str_replace(" ", "-", $form->get('title')->getData());
             $user = $this->getUser();
@@ -74,8 +94,16 @@ class PostController extends AbstractController
             $this->em->flush();
             return $this->redirectToRoute('index');
         }
+        if ($filter_form->isSubmitted() && $filter_form->isValid()) {
+            $seleccion = $filter_form->get('filter_type')->getData();
+            if ($seleccion == 'none') {
+                return $this->redirectToRoute('index', ['filter' => $seleccion]);
+            }
+            return $this->redirectToRoute('filter_posts', ['filter' => $seleccion]);
+        }
         return $this->render('post/index.html.twig', [
             'form' => $form->createView(),
+            'filter_form' => $filter_form->createView(),
             'posts' => $pagination
         ]);
     }
