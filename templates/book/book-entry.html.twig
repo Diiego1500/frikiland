@@ -12,11 +12,29 @@
                 <h1>{{ entry.title }}</h1>
                 <p>Fecha de publicación: {{ entry.publicationdate | date("m/d/Y") }}</p>
                 <p>{{ entry.description | raw }}</p>
+                    {% set last_entry = entry_exist((entry.id - 1)) %}
+                    {% set next_entry = entry_exist((entry.id + 1)) %}
+                    <div class="text-right">
+                        {% if last_entry %}
+                            <a href="{{ path('book_entry', {id: last_entry.id}) }}">⬅️ Capitulo Anterior</a>
+                        {% else %}
+                            <span style="opacity: 0.5">
+                                <a href="#">⬅️ Capitulo Anterior</a>
+                            </span>
+                        {% endif %}
+                        |
+                        {% if next_entry %}
+                            <a href="{{ path('book_entry', {id: next_entry.id}) }}">Siguiente Capitulo ➡️</a>
+                        {% else %}
+                            <span style="opacity: 0.5">
+                                <a href="#">Siguiente Capitulo ➡️</a>
+                            </span>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
-
-                    <div class="p-2 my-2">
+                    <div class="p-2 my-2 sticky-top">
                         <div class="text-center alert alert-info">
                             <img src="{{ asset('uploads/books/'~ entry.book.frontpage) }}" alt="{{ entry.book.name }}" width="100%">
                             <h5 class="my-3">{{ entry.book.name }}</h5>
