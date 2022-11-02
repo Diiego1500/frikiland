@@ -125,10 +125,19 @@
                                 </div>
 
                                 <div class="{{ second_row }} my-auto">
-                                    {% if post.file != null %}
+                                    {% if post.file != null and post.type != '📹 Video' %}
                                         <img src="{{ asset('uploads/files/' ~ post.file) }}" alt="Not found"
                                              width="100%">
                                     {% endif %}
+                                    {% if post.file != null and post.type == '📹 Video' %}
+                                        {% set format = post.file|split('.') %}
+                                        <video width="100%" height="240" controls>
+                                            <source src="{{ asset('uploads/files/' ~ post.file) }}" type="video/{{ format |last }}">
+                                            <source src="{{ asset('uploads/files/' ~ post.file) }}" type="video/{{ format |last }}">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    {% endif %}
+
                                 </div>
 
                             </div>

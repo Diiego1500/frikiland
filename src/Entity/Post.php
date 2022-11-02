@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
-    CONST CHOICES = ['👩‍💻 Programación' => '👩‍💻 Programación', '😂 Humor' => '😂 Humor', '🗣 Aporte' => '🗣 Aporte', '🤔 Opinión' => '🤔 Opinión', '🤓 Debate' => '🤓 Debate'];
-    CONST CHOICES_FILTER = ['Restablecer'=>'none', 'Programación' => 'Programación', 'Humor' => 'Humor', 'Aporte' => 'Aporte', 'Opinión' => 'Opinión', 'Debate' => 'Debate'];
+    CONST CHOICES = ['👩‍💻 Programación' => '👩‍💻 Programación', '😂 Humor' => '😂 Humor', '🗣 Aporte' => '🗣 Aporte', '🤔 Opinión' => '🤔 Opinión', '🤓 Debate' => '🤓 Debate', '📹 Video' => '📹 Video'];
+    CONST CHOICES_FILTER = ['Restablecer'=>'none', 'Programación' => 'Programación', 'Humor' => 'Humor', 'Aporte' => 'Aporte', 'Opinión' => 'Opinión', 'Debate' => 'Debate', 'Video' => 'Video'];
     CONST PLACEHOLDER = 'Seleccione una opción';
     /**
      * @ORM\Id
