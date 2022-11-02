@@ -9,6 +9,13 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+        <style>
+            .headline {
+                z-index: 100000 !important;
+                background-color: white;
+                position: page !important;
+            }
+        </style>
         <script async
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1344652070596566"></script>
     {% endblock %}
@@ -57,7 +64,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa-solid fa-user"></i>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu headline" aria-labelledby="navbarDropdown">
 
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a href="{{ path('AdminPodcast') }}" class="dropdown-item">Admin Podcast</a>
