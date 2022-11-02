@@ -38,7 +38,7 @@
             </div>
             <div class="text-center my-4">
                 {% if post.file != null and post.type != '📹 Video' %}
-                    <img src="{{ asset('uploads/files/' ~ post.file) }}" alt="Not found">
+                    <img src="{{ asset('uploads/files/' ~ post.file) }}" alt="Not found" width="80%">
                 {% endif %}
                 {% if post.file != null and post.type == '📹 Video' %}
                     {% set format = post.file|split('.') %}
