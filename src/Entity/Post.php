@@ -62,8 +62,14 @@ class Post
      */
     private $url;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $fixed_post;
+
     public function __construct()
     {
+        $this->fixed_post = false;
         $this->interactions = new ArrayCollection();
     }
 
@@ -182,6 +188,18 @@ class Post
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getFixedPost(): ?bool
+    {
+        return $this->fixed_post;
+    }
+
+    public function setFixedPost(bool $fixed_post): self
+    {
+        $this->fixed_post = $fixed_post;
 
         return $this;
     }

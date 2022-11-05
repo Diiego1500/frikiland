@@ -186,6 +186,17 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route ("/admin/fix/post/{id}", name="admin_fix_post")
+     */
+    public function admin_fix_post(Post $post){
+        $title = $post->getTitle();
+        $post->setFixedPost(!$post->getFixedPost());
+        $this->em->flush();
+        $this->addFlash('success', "Post $title FIJADO con exito");
+        return $this->redirectToRoute('admin_posts');
+    }
+
+    /**
      * @Route ("/admin/post/edit/{id}", name="admin_post_edit")
      */
     public function admin_post_edit(Post $post, Request $request){
@@ -195,7 +206,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
             $title = $post->getTitle();
-            $this->addFlash('success', "Post $title con exito");
+            $this->addFlash('success', "Post $title EDITADO con exito");
             return $this->redirectToRoute('admin_posts');
         }
         return $this->render('post/post-edit.html.twig', ['form' => $form->createView(), 'post' => $post]);

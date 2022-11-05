@@ -20,6 +20,7 @@
                     <th>F. Publicación</th>
                     <th>Titulo</th>
                     <th>Tipo</th>
+                    <th>Fijado</th>
                     <th>Acciones</th>
                 </tr>
                 </thead>
@@ -30,6 +31,14 @@
                     <td><a href="{{ path('postDetails', {id: post.id, url: post.url}) }}">{{ post.title }}</a></td>
                     <td>{{ post.type }}</td>
                     <td>
+                        {% if post.fixed_post %}
+                            <div class="alert alert-success">Fijado</div>
+                        {% else %}
+                            <div>No fijado</div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_fix_post', {id: post.id}) }}" class="btn btn-info btn-block">Editar Fijado</a>
                         <a href="{{ path('admin_post_edit', {id: post.id}) }}" class="btn btn-warning btn-block">Editar</a>
                         <a href="{{ path('delete_post', {id: post.id}) }}" class="btn btn-danger btn-block" onclick="return confirm('¿Desea eliminar este POST?');">Eliminar</a>
                     </td>

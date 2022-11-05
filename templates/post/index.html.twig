@@ -98,12 +98,18 @@
                                                     {% if post.user_trusted %}
                                                         <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="8%">
                                                     {% endif %}
+                                                    {% if post.fixed_post %}
+                                                        <span class="px-2"><span style="font-size: 15px; color: mediumpurple">(POST Fijado por el administrador)</span></span>
+                                                    {% endif %}
                                                 </div>
                                                 <div class="d-none d-md-block">
                                                 {{ post.title }}
-                                                {% if post.user_trusted %}
+                                                    {% if post.user_trusted %}
                                                         <img  src="{{ asset('img/confianza.png') }}" alt="perfil confiable" width="5%">
-                                                {% endif %}
+                                                    {% endif %}
+                                                    {% if post.fixed_post %}
+                                                        <span class="px-2"><span style="font-size: 15px; color: mediumpurple">(POST Fijado por el administrador)</span></span>
+                                                    {% endif %}
                                                 </div>
                                             </a>
                                         </h4>
