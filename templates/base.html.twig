@@ -67,9 +67,10 @@
                             <div class="dropdown-menu headline" aria-labelledby="navbarDropdown">
 
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('AdminPodcast') }}" class="dropdown-item">Admin Podcast</a>
+                                    <a href="{{ path('admin_posts') }}" class="dropdown-item">Admin Posts</a>
                                     <a href="{{ path('admin_users') }}" class="dropdown-item">Admin Users</a>
                                     <a href="{{ path('admin_books') }}" class="dropdown-item">Admin Books</a>
+                                    <a href="{{ path('AdminPodcast') }}" class="dropdown-item">Admin Podcast</a>
                                     <a href="{{ path('news_notification') }}" class="dropdown-item">Notificaciones</a>
                                 {% endif %}
 

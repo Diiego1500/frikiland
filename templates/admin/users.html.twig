@@ -19,7 +19,11 @@
                 <tr>
                     <td><a href="{{ path('app_user', {id:user.id}) }}">{{ user.id }}</a></td>
                     <td>{{ user.email }}</td>
-                    <td>{% if user.istrusted %}Confiable {% else %} No confiable {% endif %}</td>
+                    <td>{% if user.istrusted %}
+                           <div class="alert alert-success">Confiable</div>
+                        {% else %}
+                            <div class="alert alert-success alert-warning">No confiable</div>
+                        {% endif %}</td>
 
                     <td>
                         <a href="{{ path('trusted_user', {id: user.id}) }}" class="btn btn-warning btn-block">Confiabilidad</a>

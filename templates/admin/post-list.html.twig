@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista de POSTS{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success my-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <h3 class="my-3">Administrar Posts</h3>
+        <div class="bg-white">
+            <table class="table table-responsive-sm table-striped">
+                <thead>
+                <tr>
+                    <th>Propietario</th>
+                    <th>F. Publicación</th>
+                    <th>Titulo</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+            {% for post in pagination %}
+                <tr>
+                    <td><a href="{{ path('app_user', {id:post.user_id}) }}">{{ post.user_username }}</a></td>
+                    <td>{{ post.creation_date |date("m/d/Y") }}</td>
+                    <td><a href="{{ path('postDetails', {id: post.id, url: post.url}) }}">{{ post.title }}</a></td>
+                    <td>{{ post.type }}</td>
+                    <td>
+                        <a href="{{ path('admin_post_edit', {id: post.id}) }}" class="btn btn-warning btn-block">Editar</a>
+                        <a href="{{ path('delete_post', {id: post.id}) }}" class="btn btn-danger btn-block" onclick="return confirm('¿Desea eliminar este POST?');">Eliminar</a>
+                    </td>
+                </tr>
+            {% else %}
+                <div ></div>
+            {% endfor %}
+            </table>
+            {# display navigation #}
+            <div class="p-2">
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination, 'custom/custom_pagination.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

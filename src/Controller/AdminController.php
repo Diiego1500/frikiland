@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Entity\BookEntry;
+use App\Entity\Post;
 use App\Entity\User;
 use App\Form\BookEntryType;
 use App\Form\BookType;
 use App\Form\NotificationType;
+use App\Form\PostType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -165,6 +168,47 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/edit-entry.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/admin/posts", name="admin_posts")
+     */
+    public function admin_posts(PaginatorInterface $paginator, Request $request) {
+        $query = $this->em->getRepository(Post::class)->findAllPost();
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+        return $this->render('admin/post-list.html.twig', [
+            'pagination' => $pagination
+        ]);
+    }
+
+    /**
+     * @Route ("/admin/post/edit/{id}", name="admin_post_edit")
+     */
+    public function admin_post_edit(Post $post, Request $request){
+        $form = $this->createForm(PostType::class, $post);
+        $form->remove('file');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->flush();
+            $title = $post->getTitle();
+            $this->addFlash('success', "Post $title con exito");
+            return $this->redirectToRoute('admin_posts');
+        }
+        return $this->render('post/post-edit.html.twig', ['form' => $form->createView(), 'post' => $post]);
+    }
+
+    /**
+     * @Route("/admin/delete/post/{id}", name="delete_post")
+     */
+    public function delete_post(Post $post){
+        $this->em->remove($post);
+        $this->em->flush();
+        $this->addFlash('success', 'Post Eliminado con exito');
+        return $this->redirectToRoute('admin_posts');
     }
 
     /**
