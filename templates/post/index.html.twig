@@ -132,7 +132,11 @@
 
                                 <div class="{{ second_row }} my-auto">
                                     {% if post.file != null and post.type != '📹 Video' %}
-                                        <img src="{{ asset('uploads/files/' ~ post.file) }}" alt="Not found"
+                                        <img class="image_thumb"
+                                             data-id="{{ post.id }}"
+                                             src="{{ asset('uploads/files/' ~ post.file ) | imagine_filter('custom_thumb') }}"
+                                             alt="{{ post.title }}"
+
                                              width="100%">
                                     {% endif %}
                                     {% if post.file != null and post.type == '📹 Video' %}
@@ -209,6 +213,7 @@
     {{ parent() }}
     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/sweetalert2.js') }}"></script>
     <script src="{{ asset('js/index.js') }}"></script>
     <script>
         $('.custom-file-input').on('change', function (event) {

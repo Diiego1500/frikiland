@@ -176,6 +176,18 @@ class PostController extends AbstractController
     }
 
     /**
+     * @Route ("/post/ajax/detail/{id}", options={"expose"=true}, name="ajaxPostDetails")
+     */
+    public function ajaxPostDetails(Post $post, Request $request) {
+        if ($request->isXmlHttpRequest()) {
+
+            return new JsonResponse(['post_image' => $post->getFile(), 'post_title' => $post->getTitle()]);
+        } else {
+            throw new \Exception('This is not an ajax Call');
+        }
+    }
+
+    /**
      * @Route ("/post/save/{id}", options={"expose"=true}, name="postSave")
      */
     public function postSave(Post $post, Request $request) {

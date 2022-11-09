@@ -63,3 +63,23 @@ $('#delete-sm').click(function (){
         }
     })
 })
+
+$('.image_thumb').click(function () {
+    var post_id = $(this).attr("data-id");
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('ajaxPostDetails', { id: post_id }),
+        data: ({post_id: post_id}),
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            Swal.fire({
+                text: data['post_title'],
+                imageUrl: '../uploads/files/' + data['post_image'],
+                imageWidth: 500,
+                showConfirmButton: false,
+            })
+            console.log(data['post_image'])
+        }
+    })
+})
