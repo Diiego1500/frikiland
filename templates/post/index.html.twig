@@ -133,6 +133,7 @@
                                 <div class="{{ second_row }} my-auto">
                                     {% if post.file != null and post.type != '📹 Video' %}
                                         <img class="image_thumb"
+                                             style="cursor: pointer"
                                              data-id="{{ post.id }}"
                                              src="{{ asset('uploads/files/' ~ post.file ) | imagine_filter('custom_thumb') }}"
                                              alt="{{ post.title }}"
