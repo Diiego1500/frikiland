@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container my-2">
+        <div class="alert alert-danger">
+            No tienes acceso a este curso, por favor, adquierelo.
+        </div>
+    </div>
+{% endblock %}

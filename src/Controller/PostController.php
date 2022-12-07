@@ -85,7 +85,7 @@ class PostController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    throw new \Exception('there is a mistake with this file');
+                    throw new \Exception($e->getMessage());
                 }
                 $post->setFile($newFilename);
             }

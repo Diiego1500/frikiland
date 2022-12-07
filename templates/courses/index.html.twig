@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="row justify-content-md-center my-3">
+            {% for course in courses %}
+                <div class="col-md-4">
+                    <div class="px-1 rounded border bg-white custom-shadow">
+                        <div class="row mt-2">
+                            <div class="col-md-3">
+                                <img src="{{ asset('uploads/files/'~course.image) }}" alt="{{ course.title }}" width="100%">
+                            </div>
+                            <div class="col-md-auto text-left">
+                                <div><h5>{{ course.title }}</h5></div>
+                                <div style="color: gray">{{ course.creationdate |date("m/d/Y") }}</div>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                {{ course.shortdescription }}
+                            </div>
+
+                            <div class="col-md-12 my-3 text-right">
+                                <a href="{{ path('buy_course', {id:course.id}) }}">(${{ course.price }} USD) Comprar ></a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    <strong>¡Ten paciencia! El administrado está trabajando duro para crear cursos maravillosos para ti</strong>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

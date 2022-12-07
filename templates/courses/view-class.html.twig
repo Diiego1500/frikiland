@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-md-8 my-2">
+                <div class="p-2 bg-white border rounded">
+                    <video width="100%" controls>
+                        <source src="{{ asset('uploads/courses/'~ courseClass.video) }}" type="video/mp4">
+                    </video>
+                    <div class="text-right my-2">
+
+                            <span class="border p-2 rounded">
+                                {% if courseClass.previusclass == courseClass.id %}
+                                    No hay más clases
+                                {% else %}
+                                    <a href="{{ path('class_visualization' , {id: courseClass.previusclass}) }}"> < Ver Clase</a>
+                                {% endif %}
+                            </span>
+                        <span class="border p-2 rounded">
+                                {% if courseClass.nextclass == courseClass.id %}
+                                    No hay más clases
+                                {% else %}
+                                    <a href="{{ path('class_visualization' , {id: courseClass.nextclass}) }}">Ver Clase > </a>
+                                {% endif %}
+                            </span>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4 mt-2">
+                <div class=" p-2 h-100 w-100 bg-white border">
+                    <h3>{{ courseClass.title }}</h3>
+                    {{ courseClass.description }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

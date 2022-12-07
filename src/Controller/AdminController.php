@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Entity\BookEntry;
+use App\Entity\Course;
+use App\Entity\CourseClass;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Form\BookEntryType;
 use App\Form\BookType;
+use App\Form\CourseClassType;
+use App\Form\CourseType;
 use App\Form\NotificationType;
 use App\Form\PostType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +19,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -229,6 +234,82 @@ class AdminController extends AbstractController
         $this->em->remove($bookEntry);
         $this->em->flush();
         return $this->redirectToRoute('admin_books');
+    }
+
+    /**
+     * @Route("/admin/courses", name="admin_courses")
+     */
+    public function admin_courses(Request $request, SluggerInterface $slugger) {
+        $course = new Course();
+        $course_class = new CourseClass();
+
+        $courses = $this->em->getRepository(Course::class)->findAll();
+
+        $form = $this->createForm(CourseType::class, $course);
+        $form_class = $this->createForm(CourseClassType::class, $course_class);
+
+        $form->handleRequest($request);
+        $form_class->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+                try {
+                    $image->move(
+                        $this->getParameter('files_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    throw new \Exception('a toruble with your file');
+                }
+                $course->setImage($newFilename);
+            }
+            $this->em->persist($course);
+            $this->em->flush();
+            return $this->redirectToRoute('admin_courses');
+        }
+        if($form_class->isSubmitted() && $form_class->isValid()) {
+            $video = $form_class->get('video')->getData();
+            if ($video) {
+                $originalFilename = pathinfo($video->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newVideoname = $safeFilename.'-'.uniqid().'.'.$video->guessExtension();
+                try {
+                    $video->move(
+                        $this->getParameter('courses_directory') . '/' . str_replace(' ', '_', $course->getTitle()  ),
+                        $newVideoname
+                    );
+                } catch (FileException $e) {
+                    throw new \Exception('a toruble with your file');
+                }
+                $course_class->setVideo($newVideoname);
+            }
+            $this->em->persist($course_class);
+            $this->em->flush();
+            return $this->redirectToRoute('admin_courses');
+        }
+
+        return $this->render('admin/add-course.html.twig', [
+            'form' => $form->createView(),
+            'form_class' => $form_class->createView(),
+            'courses' => $courses
+        ]);
+    }
+
+    /**
+     * @Route("/admin/add/course/{user_id}/{course_id}", name="add_course")
+     */
+    public function add_course($user_id, $course_id){
+        $user = $this->em->getRepository(User::class)->find($user_id);
+        $user_courses = json_decode($user->getCourseAccess());
+        $user_courses[] = $course_id;
+        $user->setCourseAccess(json_encode($user_courses));
+        $this->em->persist($user);
+        $this->em->flush();
+        return new JsonResponse(['Curso Agregado exitosamente']);
     }
 
 }

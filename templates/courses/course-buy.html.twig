@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ course.title }}{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container py-3">
+        <div class="row bg-white border rounded custom-shadow m-2">
+            <div class="col-md-8">
+                <h1 class="my-3">{{ course.title }}</h1>
+                <img src="{{ asset('uploads/files/'~course.image) }}" alt="{{ course.title }}" width="30%" class="float-left mr-2">
+                <div class="text-justify my-3">
+                    {{ course.longdescription }}
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class=" d-flex h-100 w-100 ">
+                    <div class=" justify-content-center align-self-center  ">
+
+                        <div class="alert alert-info text-center">
+                            Este es un texto de prueba, la idea es renderizar Paypal en esta sección.
+                        </div>
+
+                        <div class="alert alert-warning text-center">
+                            Precio Final: ${{ course.price }} USD
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 my-3">
+                <h3 class="my-4">Temario del Curso:</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Descripción</th>
+                        <th>👁</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for class in course.courseClasses %}
+                        <tr>
+                            <td>{{ class.title }}</td>
+                            <td>{{ class.description }}</td>
+                            <td>
+                                <a href="{{ path('class_visualization' , {id: class.id}) }}">Ver Clase</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2"><div class="alert alert-danger"> No se ha registrado clases todavía</div></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

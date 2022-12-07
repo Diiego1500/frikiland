@@ -67,11 +67,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $is_trusted=false;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $course_access;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->interactions = new ArrayCollection();
         $this->podcastComments = new ArrayCollection();
+        $this->course_access = '[]';
     }
 
     public function getId(): ?int
@@ -285,6 +291,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsTrusted(bool $is_trusted): self
     {
         $this->is_trusted = $is_trusted;
+
+        return $this;
+    }
+
+    public function getCourseAccess(): ?string
+    {
+        return $this->course_access;
+    }
+
+    public function setCourseAccess(string $course_access): self
+    {
+        $this->course_access = $course_access;
 
         return $this;
     }

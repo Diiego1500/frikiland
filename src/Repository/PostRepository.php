@@ -60,7 +60,7 @@ class PostRepository extends ServiceEntityRepository
     public function findPostByType($filter) {
         return $this->getEntityManager()
             ->createQuery('
-                SELECT post.id, post.title, post.type, post.description, post.file, post.creation_date, post.url, post.creation_date AS creationdate, user.id AS user_id, user.email AS user_username, user.is_trusted as user_trusted
+                SELECT post.id, post.title, post.fixed_post AS fixed_post, post.type, post.description, post.file, post.creation_date, post.url, post.creation_date AS creationdate, user.id AS user_id, user.email AS user_username, user.is_trusted as user_trusted
                 FROM App:Post post
                 JOIN post.user user
                 WHERE post.type LIKE :filter

@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administrar cursos{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-6">
+                <div class="p-3 border bg-white rounded">
+                    <h3 class="my-3">Crear un curso</h3>
+                    {{ form(form) }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 border bg-white rounded">
+                    <h3 class="my-3">Agregar clase</h3>
+                    {{ form(form_class) }}
+                </div>
+            </div>
+        </div>
+
+
+        <hr>
+        <div class="row justify-content-md-center my-3">
+            {% for course in courses %}
+                <div class="col-md-4">
+                    <div class="px-1 rounded border bg-white custom-shadow">
+                        <div class="row mt-2">
+                            <div class="col-md-3">
+                                <img src="{{ asset('uploads/files/'~course.image) }}" alt="{{ course.title }}" width="100%">
+                            </div>
+                            <div class="col-md-auto text-left">
+                                <div><h5>{{ course.title }}</h5></div>
+                                <div style="color: gray">{{ course.creationdate |date("m/d/Y") }}</div>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                {{ course.shortdescription }}
+                            </div>
+                            <div class="col-md-12 my-3 text-right">
+                                <a href="#">(${{ course.price}} USD) Comprar ></a>
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Title</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for class in course.courseClasses %}
+                                <tr>
+                                    <td>{{ class.title }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="2"><div class="alert alert-danger"> No se ha registrado clases todavía</div></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    <strong>¡Ten paciencia! El administrado está trabajando duro para crear cursos maravillosos para ti</strong>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.custom-file-input').on('change', function (event) {
+            var inputFile = event.currentTarget;
+            $(inputFile).parent()
+                .find('.custom-file-label')
+                .html(inputFile.files[0].name);
+        });
+    </script>
+{% endblock %}

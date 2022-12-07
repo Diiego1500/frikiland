@@ -42,6 +42,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('book_index') }}"><i class="fa-solid fa-book"></i> libro</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_courses') }}"><i class="fa-solid fa-video"></i></i> Cursos</a>
+                    </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0" method="post">
                     <select name="posts_types" class="form-control mx-1" id="selected_post_type">
@@ -70,6 +73,7 @@
                                     <a href="{{ path('admin_posts') }}" class="dropdown-item">Admin Posts</a>
                                     <a href="{{ path('admin_users') }}" class="dropdown-item">Admin Users</a>
                                     <a href="{{ path('admin_books') }}" class="dropdown-item">Admin Books</a>
+                                    <a href="{{ path('admin_courses') }}" class="dropdown-item">Admin Courses</a>
                                     <a href="{{ path('AdminPodcast') }}" class="dropdown-item">Admin Podcast</a>
                                     <a href="{{ path('news_notification') }}" class="dropdown-item">Notificaciones</a>
                                 {% endif %}
