@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar clase curso{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container p-3 bg-white my-4 rounded">
+        <h2>Edita una clase</h2>
+        {{ form(form) }}
+    </div>
+{% endblock %}

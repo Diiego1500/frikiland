@@ -54,6 +54,11 @@ class Course
      */
     private $courseClasses;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_free;
+
     public function __construct() {
         $this->creation_date = new \DateTime();
         $this->courseClasses = new ArrayCollection();
@@ -163,6 +168,18 @@ class Course
                 $courseClass->setCourse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsFree(): ?bool
+    {
+        return $this->is_free;
+    }
+
+    public function setIsFree(bool $is_free): self
+    {
+        $this->is_free = $is_free;
 
         return $this;
     }

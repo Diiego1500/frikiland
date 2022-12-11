@@ -300,9 +300,61 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/delete/course/{id}", name="delete_course")
+     */
+    public function delete_course(Course $course) {
+        $course_classes = $course->getCourseClasses();
+        foreach ($course_classes as $course_class) {
+            $this->em->remove($course_class);
+        }
+        $this->em->remove($course);
+        $this->em->flush();
+        return $this->redirectToRoute('admin_courses');
+    }
+
+    /**
+     * @Route("/admin/edit/course/{id}", name="edit_course")
+     */
+    public function edit_course(Course $course, Request $request){
+        $form = $this->createForm(CourseType::class, $course);
+        $form->remove('image');
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($course);
+            $this->em->flush();
+            return $this->redirectToRoute('edit_course', ['id' => $course->getId()]);
+        }
+        return $this->render('admin/edit-course.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/admin/delete/course/class/{id}", name="delete_course_class")
+     */
+    public function delete_course_class(CourseClass $courseClass){
+        $this->em->remove($courseClass);
+        $this->em->flush();
+        return $this->redirectToRoute('admin_courses');
+    }
+
+    /**
+     * @Route("/admin/edit/course/class/{id}", name="edit_course_class")
+     */
+    public function edit_course_class(CourseClass $courseClass, Request $request){
+        $form_class = $this->createForm(CourseClassType::class, $courseClass);
+        $form_class->remove('video');
+        $form_class->handleRequest($request);
+        if($form_class->isSubmitted() && $form_class->isValid()) {
+            $this->em->persist($courseClass);
+            $this->em->flush();
+            return $this->redirectToRoute('admin_courses');
+        }
+        return $this->render('admin/edit-course-class.html.twig', ['form' => $form_class->createView()]);
+    }
+
+    /**
      * @Route("/admin/add/course/{user_id}/{course_id}", name="add_course")
      */
-    public function add_course($user_id, $course_id){
+    public function add_course_to_user($user_id, $course_id){
         $user = $this->em->getRepository(User::class)->find($user_id);
         $user_courses = json_decode($user->getCourseAccess());
         $user_courses[] = $course_id;
@@ -311,5 +363,7 @@ class AdminController extends AbstractController
         $this->em->flush();
         return new JsonResponse(['Curso Agregado exitosamente']);
     }
+
+
 
 }

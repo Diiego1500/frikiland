@@ -7,30 +7,47 @@
     <div class="container">
         <div class="row justify-content-md-center my-3">
             {% for course in courses %}
-                <div class="col-md-4">
-                    <div class="px-1 rounded border bg-white custom-shadow">
+                {% if course.isfree %}
+                    {% set custom_border_class = "border border-success" %}
+                    {% set custom_dinamic_shadow = 'custom-green-shadow' %}
+                {% else %}
+                    {% set custom_border_class = "border border-warning" %}
+                    {% set custom_dinamic_shadow = 'custom-yellow-shadow' %}
+                {% endif %}
+                <div class="col-md-4 my-3">
+                    <div class="px-1 rounded {{ custom_border_class }} bg-white {{ custom_dinamic_shadow }}">
                         <div class="row mt-2">
                             <div class="col-md-3">
                                 <img src="{{ asset('uploads/files/'~course.image) }}" alt="{{ course.title }}" width="100%">
                             </div>
                             <div class="col-md-auto text-left">
                                 <div><h5>{{ course.title }}</h5></div>
-                                <div style="color: gray">{{ course.creationdate |date("m/d/Y") }}</div>
+                                <div>
+                                    {% if course.isfree %}
+                                        <small class="border border-success p-1 rounded alert-success">🤩 Gratis!</small>
+                                    {% else %}
+                                        <small class="border border-warning p-1 rounded alert-warning">💛 Prometo enseñarte con amor. (${{ course.price }} USD)</small>
+                                    {% endif %}
+                                </div>
+                                <div style="color: gray"><small>Lanzamiento: {{ course.creationdate |date("m/d/Y") }}</small></div>
                             </div>
                             <div class="col-md-12 mt-2">
                                 {{ course.shortdescription }}
                             </div>
 
                             <div class="col-md-12 my-3 text-right">
-                                <a href="{{ path('buy_course', {id:course.id}) }}">(${{ course.price }} USD) Comprar ></a>
-
+                                {% if course.isfree %}
+                                    <a class="btn btn-info" href="{{ path('buy_course', {id:course.id}) }}">Curso Gratis ➡️</a>
+                                {% else %}
+                                    <a class="btn btn-info" href="{{ path('buy_course', {id:course.id}) }}">(${{ course.price }} USD) Comprar  ➡️</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             {% else %}
                 <div class="alert alert-warning">
-                    <strong>¡Ten paciencia! El administrado está trabajando duro para crear cursos maravillosos para ti</strong>
+                    <strong>¡Ten paciencia! El administrador está trabajando duro para crear cursos maravillosos para ti</strong>
                 </div>
             {% endfor %}
         </div>

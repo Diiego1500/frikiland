@@ -47,12 +47,18 @@ class CoursesController extends AbstractController
      */
     public function class_visualization(CourseClass $courseClass) {
         $user = $this->getUser();
-        if ($this->isGranted('ROLE_ADMIN') or in_array($courseClass->getCourse()->getId(), json_decode($user->getCourseAccess()))) {
+        if (
+            $this->isGranted('ROLE_ADMIN') // si es admin
+            or ($courseClass->getCourse()->getIsFree()  and $this->isGranted('IS_AUTHENTICATED_FULLY') )// si es gratis y está autenticado
+            or ($this->isGranted('IS_AUTHENTICATED_FULLY') and in_array($courseClass->getCourse()->getId(), json_decode($user->getCourseAccess()))) // si lo compró y está autenticado
+            ) {
             return $this->render('courses/view-class.html.twig', [
                 'courseClass' => $courseClass
             ]);
         } else {
-            return $this->render('courses/please-buy-this-course.html.twig');
+            return $this->render('courses/please-buy-this-course.html.twig',
+            ['course_id' => $courseClass->getCourse()->getId()]
+            );
         }
     }
 

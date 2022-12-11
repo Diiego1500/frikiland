@@ -19,6 +19,7 @@ class CourseClassType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('video', FileType::class, [
+                'data_class' => null,
                 'label' => 'Video Clase del curso',
             ])
             ->add('previus_class')

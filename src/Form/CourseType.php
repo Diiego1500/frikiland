@@ -18,9 +18,11 @@ class CourseType extends AbstractType
             ->add('short_description')
             ->add('long_description')
             ->add('image', FileType::class, [
+                'data_class' => null,
                 'label' => 'Imagen del curso',
             ])
             ->add('price')
+            ->add('is_free')
             ->add('Guardar', SubmitType::class)
         ;
     }

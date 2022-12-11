@@ -16,14 +16,23 @@
             <div class="col-md-4 ">
                 <div class=" d-flex h-100 w-100 ">
                     <div class=" justify-content-center align-self-center  ">
+                        {% if course.isfree %}
+                            <div class="alert alert-success h-50 border">
+                                ¡APROVECHA! Este curso es gratuito 🤩
+                            </div>
+                            <div class="alert alert-warning">
+                                <p>Los cursos gratuitos son mi aporte a la comunidad, realmente espero que aprendas mucho y continues apoyando Frikyland.</p>
+                                <p>¿Cómo agradecer? Comparte tu conocimiento </p>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info text-center">
+                                Este es un texto de prueba, la idea es renderizar Paypal en esta sección.
+                            </div>
 
-                        <div class="alert alert-info text-center">
-                            Este es un texto de prueba, la idea es renderizar Paypal en esta sección.
-                        </div>
-
-                        <div class="alert alert-warning text-center">
-                            Precio Final: ${{ course.price }} USD
-                        </div>
+                            <div class="alert alert-warning text-center">
+                                Precio Final: ${{ course.price }} USD
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

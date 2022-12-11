@@ -47,3 +47,15 @@ body {
     -moz-box-shadow: 6px 6px 11px -5px rgba(0,0,0,0.53);
     box-shadow: 6px 6px 11px -5px rgba(0,0,0,0.53);
 }
+
+.custom-green-shadow {
+    -webkit-box-shadow: 6px 6px 11px -5px rgba(40,167,69,1);
+    -moz-box-shadow: 6px 6px 11px -5px rgba(40,167,69,1);
+    box-shadow: 6px 6px 11px -5px rgba(40,167,69,1);
+}
+
+.custom-yellow-shadow {
+    -webkit-box-shadow: 6px 6px 11px -5px rgba(255,193,7,1);
+    -moz-box-shadow: 6px 6px 11px -5px rgba(255,193,7,1);
+    box-shadow: 6px 6px 11px -5px rgba(255,193,7,1);
+}

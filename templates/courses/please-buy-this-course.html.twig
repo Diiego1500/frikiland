@@ -6,7 +6,11 @@
     {{ parent() }}
     <div class="container my-2">
         <div class="alert alert-danger">
-            No tienes acceso a este curso, por favor, adquierelo.
+            No tienes acceso a este curso:
+            <ul>
+                <li>Si el curso es gratuito, <a href="{{ path('app_register') }}">Registrate</a> e <a href="{{ path('app_login') }}">Inicia sesión</a> para verlo</li>
+                <li>Si el curso tiene costo, porfa <a href="{{ path('buy_course', {id:course_id}) }}">Adquierelo</a>.</li>
+            </ul>
         </div>
     </div>
 {% endblock %}
