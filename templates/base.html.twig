@@ -2,6 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    {% block head %}
+    {% endblock %}
     <title>{% block title %}¡Frikyland!{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon.png') }}">
@@ -19,6 +21,7 @@
         <script async
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1344652070596566"></script>
     {% endblock %}
+
 </head>
 <body>
 {% block body %}
@@ -76,6 +79,7 @@
                                     <a href="{{ path('admin_courses') }}" class="dropdown-item">Admin Courses</a>
                                     <a href="{{ path('AdminPodcast') }}" class="dropdown-item">Admin Podcast</a>
                                     <a href="{{ path('news_notification') }}" class="dropdown-item">Notificaciones</a>
+                                    <a href="{{ path('watch_transactions') }}" class="dropdown-item">Transacciones</a>
                                 {% endif %}
 
                                 <a href="{{ path('app_user', {id: app.user.id}) }}" class="dropdown-item">

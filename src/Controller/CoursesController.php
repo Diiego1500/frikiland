@@ -28,7 +28,8 @@ class CoursesController extends AbstractController
     public function index(): Response {
         $courses = $this->em->getRepository(Course::class)->findAll();
         return $this->render('courses/index.html.twig', [
-            'courses' => $courses
+            'courses' => $courses,
+            'course_access' => $this->getUser() ? $this->getUser()->getCourseAccess() : []
         ]);
     }
 
@@ -36,8 +37,11 @@ class CoursesController extends AbstractController
      * @Route("/courses/{id}", name="buy_course")
      */
     public function buy_course(Course $course): Response {
+        $client_id = $this->getParameter('app.paypal_clientid');
         return $this->render('courses/course-buy.html.twig', [
-            'course' => $course
+            'course' => $course,
+            'client_id' => $client_id,
+            'course_access' => $this->getUser() ? $this->getUser()->getCourseAccess() : []
         ]);
     }
 

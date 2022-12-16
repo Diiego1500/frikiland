@@ -39,7 +39,11 @@
                                 {% if course.isfree %}
                                     <a class="btn btn-info" href="{{ path('buy_course', {id:course.id}) }}">Curso Gratis ➡️</a>
                                 {% else %}
-                                    <a class="btn btn-info" href="{{ path('buy_course', {id:course.id}) }}">(${{ course.price }} USD) Comprar  ➡️</a>
+                                    {% if course.id in course_access %}
+                                        <a class="btn btn-success" href="{{ path('buy_course', {id:course.id}) }}">Ya has adquirito este curso️</a>
+                                    {% else %}
+                                        <a class="btn btn-info" href="{{ path('buy_course', {id:course.id}) }}">(${{ course.price }} USD) Comprar  ➡️</a>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>

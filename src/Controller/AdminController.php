@@ -7,6 +7,7 @@ use App\Entity\BookEntry;
 use App\Entity\Course;
 use App\Entity\CourseClass;
 use App\Entity\Post;
+use App\Entity\Transaction;
 use App\Entity\User;
 use App\Form\BookEntryType;
 use App\Form\BookType;
@@ -362,6 +363,15 @@ class AdminController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
         return new JsonResponse(['Curso Agregado exitosamente']);
+    }
+
+
+    /**
+     * @Route("/admin/watch/transactions", name="watch_transactions")
+     */
+    public function watch_transactions(){
+        $transactions = $this->em->getRepository(Transaction::class)->findAll();
+        return $this->render('admin/watch-transactions.html.twig', ['transactions' => $transactions]);
     }
 
 

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Success{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        {{ dump(details) }}
+    </div>
+{% endblock %}

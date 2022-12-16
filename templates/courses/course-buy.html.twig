@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
-
+{% block head %}
+    {{ parent() }}
+    <script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency=USD"></script>
+{% endblock %}
 {% block title %}{{ parent() }} - {{ course.title }}{% endblock %}
 
 {% block body %}
@@ -25,18 +28,28 @@
                                 <p>¿Cómo agradecer? Comparte tu conocimiento </p>
                             </div>
                         {% else %}
-                            <div class="alert alert-info text-center">
-                                Este es un texto de prueba, la idea es renderizar Paypal en esta sección.
-                            </div>
-
-                            <div class="alert alert-warning text-center">
-                                Precio Final: ${{ course.price }} USD
-                            </div>
+                            {% if course.id in course_access %}
+                                <div class="alert alert-success text-justify">
+                                    Gracias por confiar en mi trabajo. Has comprado este curso y espero de todo corazón que
+                                    te sea de mucha utilidad.
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info text-center">
+                                    <div id="paypal-button-container"></div>
+                                    <form id="paypal-form" action="{{ path('paypal_success') }}" method="post">
+                                        <input type="hidden" name="details" id="details-input" />
+                                        <input type="hidden" name="course-name" id="course-name-input" value="{{ course.title }}">
+                                        <input type="hidden" name="course-id" id="course-id-input" value="{{ course.id }}">
+                                    </form>
+                                </div>
+                                <div class="alert alert-warning text-center">
+                                    <h3>Precio Final: ${{ course.price }} USD</h3>
+                                </div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
             </div>
-
             <div class="col-md-12 my-3">
                 <h3 class="my-4">Temario del Curso:</h3>
                 <table class="table table-striped">
@@ -64,8 +77,32 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
-
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{ course.price }}'
+                        }
+                    }]
+                });
+            },
+            onApprove: (data, actions) => {
+                return actions.order.capture().then(function(orderData) {
+                    var paypalForm = document.getElementById('paypal-form');
+                    var detailsInput = document.getElementById('details-input');
+                    var jsonDetails = JSON.stringify(orderData);
+
+                    detailsInput.value = jsonDetails;
+                    paypalForm.submit();
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
 {% endblock %}

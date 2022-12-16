@@ -9,6 +9,7 @@ parameters:
     podcast_directory: '%kernel.project_dir%/public/uploads/podcast'
     books_directory: '%kernel.project_dir%/public/uploads/books'
     courses_directory: '%kernel.project_dir%/public/uploads/courses'
+    app.paypal_clientid: '%env(PAYPAL_CLIENTID)%'
 services:
     # default configuration for services in *this* file
     _defaults:
