@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% set entry_counter = 1 %}
 {% block title %}Libros{% endblock %}
 
 {% block body %}
@@ -28,7 +28,8 @@
 
                     {% for entry in entries %}
                         <tr>
-                            <td style="opacity: {{ opacity }}">
+                            <td style=" opacity: {{ opacity }}">
+                                <span class="rounded-circle border py-1 px-2" >{{ entry_counter }}</span>
                                 {% if disable == true %}
                                     {% set path_to_entry = path('book_entry', {id:entry.id}) %}
                                 {% else %}
@@ -37,6 +38,7 @@
                                 <a href="{{ path_to_entry }}">{{ entry.book.name }} - {{ entry.title }}</a>
                             </td>
                         </tr>
+                        {% set entry_counter = entry_counter + 1 %}
                     {% else %}
                         <div class="alert alert-warning">Aún no se registran entradas</div>
                     {% endfor %}
