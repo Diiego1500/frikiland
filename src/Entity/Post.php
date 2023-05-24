@@ -67,9 +67,15 @@ class Post
      */
     private $fixed_post;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $likes_ammount;
+
     public function __construct()
     {
         $this->fixed_post = false;
+        $this->likes_ammount = 0;
         $this->interactions = new ArrayCollection();
     }
 
@@ -203,4 +209,22 @@ class Post
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getLikesAmmount(): int
+    {
+        return $this->likes_ammount;
+    }
+
+    /**
+     * @param int $likes_ammount
+     */
+    public function setLikesAmmount(int $likes_ammount): void
+    {
+        $this->likes_ammount = $likes_ammount;
+    }
+
+
 }

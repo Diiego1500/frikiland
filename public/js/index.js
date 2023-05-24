@@ -34,6 +34,32 @@ $('.add_favorite').click(function () {
     })
 })
 
+
+$('.add_like').click(function (){
+    var like = event.target;
+    post_id = $('#like_btn').attr("data-id")
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('postLike', { id: post_id }),
+        data: ({post_id: post_id}),
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            console.log(data)
+            var like_value = data['like_value'];
+            if (like_value === true) {
+                $('#like_btn').css('color','#3747be');
+                $('#like_btn_mobile').css('color','#3747be');
+            }else {
+                $('#like_btn').css('color', '#c2c1c1');
+                $('#like_btn_mobile').css('color', '#c2c1c1');
+            }
+            $('#likes_ammount').text(data['likes_ammount'])
+            $('#likes_ammount_mobile').text(data['likes_ammount'])
+        }
+    })
+})
+
 $('#delete').click(function (){
     var post_id = $(this).attr("data-id")
     Swal.fire({

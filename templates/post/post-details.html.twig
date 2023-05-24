@@ -12,6 +12,18 @@
                 <h1> {{ post.title }}
                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         |
+
+                        <button class="add_like"  style="background-color: transparent; border: 1px solid transparent">
+                            {% if interaction.userlike %}
+                                {% set color = '#3747be' %}
+                            {% else %}
+                                {% set color = '#c2c1c1' %}
+                            {% endif %}
+                            <i id="like_btn" data-id="{{ post.id }}" class="fa-solid fa-thumbs-up" style="color: {{ color }};"></i>
+                            <span id="likes_ammount">{{ post.likesammount }}</span>
+                        </button>
+
+                        |
                         <button class="add_favorite"
                                 style="background-color: transparent; border: 1px solid transparent">
                                                     <span style="color: orange"><i class="fa-solid fa-star"
@@ -65,6 +77,17 @@
                         <div class="text-left">
                             <h1> {{ post.title }}
                                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                    |
+
+                                    <button class="add_like" data-id="{{ post.id }}" style="background-color: transparent; border: 1px solid transparent">
+                                        {% if interaction.userlike %}
+                                            {% set color = '#3747be' %}
+                                        {% else %}
+                                            {% set color = '#c2c1c1' %}
+                                        {% endif %}
+                                        <i id="like_btn_mobile" class="fa-solid fa-thumbs-up" style="color: {{ color }};"></i>
+                                    </button>
+                                    <span id="likes_ammount_mobile">{{ post.likesammount }}</span>
                                     |
                                     <button class="add_favorite"
                                             style="background-color: transparent; border: 1px solid transparent">

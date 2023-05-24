@@ -140,7 +140,8 @@ class PostController extends AbstractController
         return $this->render('post/post-details.html.twig', [
             'interaction_form' => $interaction_form->createView(),
             'post' => $post,
-            'interactions' => $interactions
+            'interactions' => $interactions,
+            'interaction' => $interaction
         ]);
     }
 
@@ -193,16 +194,43 @@ class PostController extends AbstractController
     public function postSave(Post $post, Request $request) {
         if ($request->isXmlHttpRequest()) {
             $user = $this->getUser();
-            $interaction = $this->em->getRepository(Interaction::class)->findOneBy(['post' => $post, 'user' => $user]);
-            if ($interaction == null) {
-                $interaction = new Interaction();
-                $interaction->setUser($user)->setPost($post)->setUserFavorite(true)->setComment(null);
-                $this->em->persist($interaction);
-            }
+            $interaction = $this->checkInteractionPost($post, $user);
             $interaction->setUserFavorite(true);
             $this->em->flush();
             return new JsonResponse(['success' => true]);
         }
         throw new Exception('this is not an ajax call');
     }
+
+    /**
+     * @Route ("/post/like/{id}", options={"expose"=true}, name="postLike")
+     */
+    public function postLike(Post $post, Request $request) {
+        if ($request->isXmlHttpRequest()) {
+            $user = $this->getUser();
+            $likes_ammount = $post->getLikesAmmount();
+            $interaction = $this->checkInteractionPost($post, $user);
+            $interaction->setUserLike(!$interaction->getUserLike());
+            if($interaction->getUserLike() == true) {
+                $likes_ammount+=1;
+                $post->setLikesAmmount($likes_ammount);
+            } else {
+                $likes_ammount-=1;
+                $post->setLikesAmmount($likes_ammount);
+            }
+            $this->em->flush();
+            return new JsonResponse(['success' => true, 'like_value' => $interaction->getUserLike(), 'likes_ammount' => $post->getLikesAmmount()]);
+        }
+    }
+
+    public function checkInteractionPost($post, $user) {
+        $interaction = $this->em->getRepository(Interaction::class)->findOneBy(['post' => $post, 'user' => $user]);
+        if ($interaction == null) {
+            $interaction = new Interaction();
+            $interaction->setUser($user)->setPost($post)->setComment(null)->setIsNew(true);
+            $this->em->persist($interaction);
+        }
+        return $interaction;
+    }
+
 }

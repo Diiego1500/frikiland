@@ -23,6 +23,18 @@ class Interaction
     private $user_favorite;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true )
+     */
+    private $user_like;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true )
+     */
+    private $is_new;
+
+
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
@@ -91,4 +103,39 @@ class Interaction
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUserLike()
+    {
+        return $this->user_like;
+    }
+
+    /**
+     * @param mixed $user_like
+     */
+    public function setUserLike($user_like): void
+    {
+        $this->user_like = $user_like;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsNew()
+    {
+        return $this->is_new;
+    }
+
+    /**
+     * @param mixed $is_new
+     */
+    public function setIsNew($is_new): void
+    {
+        $this->is_new = $is_new;
+    }
+
+
+
 }
