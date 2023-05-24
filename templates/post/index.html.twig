@@ -115,7 +115,8 @@
                                         </h4>
 
 {#                                        <p>Por <a href="{{path('app_user', {id:post.user_id})}}">{{ post.user_username }}</a> el {{ post.creationdate | date }}</p>#}
-                                        <p>Fecha de publicación: {{ post.creationdate | date }}</p>
+                                        <div>Fecha de publicación: {{ post.creationdate | date }}</div>
+                                        <span>( <i id="like_btn_mobile" class="fa-solid fa-thumbs-up" style="color: #3747be;"></i> {{ post.likesammount  }} Me gusta )</span>
                                         <div class="my-2">
                                             <span class="alert-success py-1 px-5">{{ post.type }}</span>
                                         </div>
