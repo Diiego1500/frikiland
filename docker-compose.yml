@@ -11,12 +11,12 @@ services:
     volumes:
       - frikyland_db:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3309:3306"
   phpmyadmin:
     image: phpmyadmin
     restart: always
     ports:
-      - 8080:80
+      - 8089:80
     environment:
       - PMA_ARBITRARY=1
   web_app:
@@ -27,6 +27,6 @@ services:
     volumes:
       - .:/var/www/html/frikyland
     ports:
-      - "80:80"
+      - "82:80"
 volumes:
   frikyland_db:

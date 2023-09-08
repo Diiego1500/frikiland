@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 ENV DEBIAN_FRONTEND noninteractive
-
+ENV COMPOSER_ALLOW_SUPERUSER 1
 # APACHE  Y DEPENDENCIAS UBUNTU
 RUN apt-get update && apt-get install -y apache2 curl unzip wget && apt-get clean
 
@@ -29,7 +29,12 @@ RUN apt install -y nodejs npm
 
 COPY 000-default.conf /etc/apache2/sites-available
 WORKDIR /var/www/html/frikyland
-
+COPY ./entry-point.sh /var/www/html/frikyland/entry-point.sh
+RUN chmod +x entry-point.sh
+RUN bash /var/www/html/frikyland/entry-point.sh
+#ENTRYPOINT ["bash", "/var/www/html/frikyland/entry-point.sh"]
+# RUN npm install && npm run build
 #DEPENDENCIES
+
 # RUN composer install && npm install && npm run build
 CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
