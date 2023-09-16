@@ -23,10 +23,11 @@ services:
     depends_on:
       - db_app
     container_name: frikyland_app
-    build: ./docker_files/
+    build: .
     volumes:
       - .:/var/www/html/frikyland
     ports:
       - "82:80"
+    # command: /usr/sbin/apache2ctl -DFOREGROUND && composer install
 volumes:
   frikyland_db:
