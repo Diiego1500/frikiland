@@ -4,7 +4,15 @@
     <script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency=USD"></script>
 {% endblock %}
 {% block title %}{{ parent() }} - {{ course.title }}{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .vertical-center {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     {{ parent() }}
     <div class="container py-3">
@@ -20,7 +28,7 @@
                 <div class=" d-flex h-100 w-100 ">
                     <div class=" justify-content-center align-self-center  ">
                         {% if course.isfree %}
-                            <div class="alert alert-success h-50 border">
+                            <div class="alert alert-success h-50 border mt-3">
                                 ¡APROVECHA! Este curso es gratuito 🤩
                             </div>
                             <div class="alert alert-warning">
@@ -52,21 +60,22 @@
             </div>
             <div class="col-md-12 my-3">
                 <h3 class="my-4">Temario del Curso:</h3>
-                <table class="table table-striped">
+                <table class="table table-striped table-responsive-sm text-center">
                     <thead>
                     <tr>
-                        <th>Titulo</th>
-                        <th>Descripción</th>
-                        <th>👁</th>
+                        <th width="50%">Descripción</th>
+                        <th width="25%">👁</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for class in course.courseClasses %}
                         <tr>
-                            <td>{{ class.title }}</td>
-                            <td>{{ class.description }}</td>
                             <td>
-                                <a href="{{ path('class_visualization' , {id: class.id}) }}">Ver Clase</a>
+                                <h3>{{ class.title }}  </h3>
+                                {{ class.description | raw }}
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-success btn-block" href="{{ path('class_visualization' , {id: class.id}) }}">Ver Clase</a>
                             </td>
                         </tr>
                     {% else %}

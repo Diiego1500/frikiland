@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 ENV DEBIAN_FRONTEND noninteractive
-
+ENV COMPOSER_ALLOW_SUPERUSER 1
 # APACHE  Y DEPENDENCIAS UBUNTU
 RUN apt-get update && apt-get install -y apache2 curl unzip wget && apt-get clean
 
@@ -24,12 +24,10 @@ RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # NPM
-
 RUN apt install -y nodejs npm
 
 COPY 000-default.conf /etc/apache2/sites-available
 WORKDIR /var/www/html/frikyland
+COPY . /var/www/html/frikyland
 
-#DEPENDENCIES
-# RUN composer install && npm install && npm run build
-CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
+CMD bash -c "composer install && npm install && npm run build && /usr/sbin/apache2ctl -DFOREGROUND"
