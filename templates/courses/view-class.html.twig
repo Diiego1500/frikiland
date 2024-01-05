@@ -35,7 +35,7 @@
             <div class="col-md-4 mt-2">
                 <div class=" p-2 h-100 w-100 bg-white border">
                     <h3>{{ courseClass.title }}</h3>
-                    {{ courseClass.description }}
+                    {{ courseClass.description | raw }}
                 </div>
             </div>
         </div>
