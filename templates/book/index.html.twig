@@ -5,21 +5,7 @@
 {% block body %}
     {{ parent() }}
     <div class="container">
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            {% set opacity = 1 %}
-            {% set disable = true %}
-        {% else %}
-            {% set opacity = 0.5 %}
-            {% set disable = false %}
-            <div class="alert alert-secondary my-4">
-                <h4>
-                    <i class="fa-solid fa-triangle-exclamation"></i> -
-                    Si deseas leer/comentar el libro, por favor <a
-                            href="{{ path('app_register') }}" style="opacity: 1 !important; ">Registrate</a> o
-                    <a href="{{ path('app_login') }}">inicia sesión</a>
-                </h4>
-            </div>
-        {% endif %}
+
 
         <div class="row my-2">
             <div class="col-md-8">
@@ -28,13 +14,9 @@
 
                     {% for entry in entries %}
                         <tr>
-                            <td style=" opacity: {{ opacity }}">
+                            <td>
                                 <span class="rounded-circle border py-1 px-2" >{{ entry_counter }}</span>
-                                {% if disable == true %}
-                                    {% set path_to_entry = path('book_entry', {id:entry.id}) %}
-                                {% else %}
-                                    {% set path_to_entry = '#' %}
-                                {% endif %}
+                                {% set path_to_entry = path('book_entry', {id:entry.id}) %}
                                 <a href="{{ path_to_entry }}">{{ entry.book.name }} - {{ entry.title }}</a>
                             </td>
                         </tr>

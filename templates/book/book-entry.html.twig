@@ -5,7 +5,6 @@
 {% block body %}
     {{ parent() }}
     <div class="container">
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <div class="row my-2">
             <div class="col-md-8">
                 <div class="p-2 bg-white rounded p-2 my-2">
@@ -45,15 +44,5 @@
 
             </div>
         </div>
-        {% else %}
-            <div class="alert alert-secondary my-4">
-                <h4>
-                    <i class="fa-solid fa-triangle-exclamation"></i> -
-                    Si deseas leer/comentar el libro, por favor <a
-                            href="{{ path('app_register') }}" style="opacity: 1 !important; ">Registrate</a> o
-                    <a href="{{ path('app_login') }}">inicia sesión</a>
-                </h4>
-            </div>
-        {% endif %}
     </div>
 {% endblock %}
